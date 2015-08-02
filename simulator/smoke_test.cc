@@ -1,6 +1,6 @@
 #ifdef DO_SMOKE_TEST
 
-#include "A4988Simulator.h"
+#include "simulator/A4988Simulator.h"
 
 #include <iostream>
 

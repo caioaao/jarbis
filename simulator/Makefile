@@ -1,4 +1,4 @@
-CCFLAGS = -Wall
+CCFLAGS = -Wall -I../
 
 all:
 	g++ $(CCFLAGS) -c -o A4988Simulator.o A4988Simulator.cc -D DO_SMOKE_TEST

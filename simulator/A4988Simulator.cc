@@ -1,4 +1,4 @@
-#include "A4988Simulator.h"
+#include "simulator/A4988Simulator.h"
 
 #include <stdint.h>
 
@@ -34,7 +34,8 @@ namespace simulator
     {
         // Although table 1 from datasheet shows only 5 configurations for the
         // MSx pins, page 7 explains how it really works, resulting in the
-        // formula: 2^(MS1) * 2^(MS2*2) * 2^(MS3)
+        // formula: 2^(MS1) * 2^(MS2*2) * 2^(MS3) This interpretation needs real
+        // testing, thou
 
         bool v1 = get_value_(MS1_PORT);
         bool v2 = get_value_(MS2_PORT);
