@@ -21,11 +21,20 @@ namespace simulator
     {
     private:
         uint32_t state_;
+
+        bool get_value_(A4988SimulatorPort port_idx);
+
+        unsigned int microstep_resolution_;
+
+        void update_microstep_resolution_();
+
     public:
         A4988Simulator();
-        void set_port_value(A4988SimulatorPort port_idx, bool logical_value);
+        void set_value(A4988SimulatorPort port_idx, bool logical_value);
+
 #ifdef DO_SMOKE_TEST
         uint32_t state(void);
+        unsigned int microstep_resolution(void);
 #endif
     };
 
