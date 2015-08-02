@@ -12,6 +12,8 @@ namespace simulator
     A4988Simulator::set_value(A4988SimulatorPort port_idx,
                                    bool logical_value)
     {
+        // TODO: refactor this to a state machine: reset/enable/sleep ports
+        // affect some of the functions
         uint32_t old_state = state_;
         state_ &= ~((1 & !logical_value) << port_idx);
         state_ |=  ((1 &  logical_value) << port_idx);
