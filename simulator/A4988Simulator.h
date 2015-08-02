@@ -28,9 +28,13 @@ namespace simulator
 
         void update_microstep_resolution_();
 
+
+
     public:
         A4988Simulator();
         void set_value(A4988SimulatorPort port_idx, bool logical_value);
+
+        static bool microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3);
 
 #ifdef DO_SMOKE_TEST
         uint32_t state(void);

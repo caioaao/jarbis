@@ -30,7 +30,7 @@ namespace simulator
     }
 
     bool
-    microstep_cfg_is_valid_(bool ms1, bool ms2, bool ms3)
+    A4988Simulator::microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3)
     {
         // based on table 1 from a4988's datasheet
         return !((ms1 ^ ms2) & ms3);
@@ -54,7 +54,7 @@ namespace simulator
         bool v2 = get_value_(MS2_PORT);
         bool v3 = get_value_(MS3_PORT);
 
-        if(true == microstep_cfg_is_valid_(v1, v2, v3))
+        if(true == A4988Simulator::microstep_cfg_is_valid(v1, v2, v3))
         {
             microstep_resolution_ = microstep_resolution_table_[v1][v2][v3];
         }
@@ -118,9 +118,9 @@ namespace simulator
 
         for(int i = 0; i < num_res; ++i)
         {
-            assert(microstep_cfg_is_valid_(ms_vals_[i][0],
-                                           ms_vals_[i][1],
-                                           ms_vals_[i][2]));
+            assert(A4988Simulator::microstep_cfg_is_valid(ms_vals_[i][0],
+                                                          ms_vals_[i][1],
+                                                          ms_vals_[i][2]));
 
 
             driverSim.set_value(MS1_PORT, ms_vals_[i][0]);
