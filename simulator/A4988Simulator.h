@@ -21,14 +21,11 @@ namespace simulator
     {
     private:
         uint32_t state_;
-
-        bool get_value_(A4988SimulatorPort port_idx);
-
         unsigned int microstep_resolution_;
 
-        void update_microstep_resolution_();
-
-
+        bool get_value_(A4988SimulatorPort port_idx);
+        void update_microstep_resolution_(void);
+        void try_to_step_(void);
 
     public:
         A4988Simulator();

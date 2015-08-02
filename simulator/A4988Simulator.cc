@@ -12,22 +12,37 @@ namespace simulator
     A4988Simulator::set_value(A4988SimulatorPort port_idx,
                                    bool logical_value)
     {
+        uint32_t old_state = state_;
         state_ &= ~((1 & !logical_value) << port_idx);
         state_ |=  ((1 &  logical_value) << port_idx);
 
-        if((MS1_PORT == port_idx) ||
-           (MS2_PORT == port_idx) ||
-           (MS3_PORT == port_idx))
+        switch(port_idx)
         {
+        case STEP_PORT:
+
+            if(true == logical_value && 0 == (old_state & (1 << STEP_PORT)))
+            {
+                // See page 9 for explanation.
+                try_to_step_();
+            }
+            break;
+        case MS1_PORT:
+        case MS2_PORT:
+        case MS3_PORT:
             update_microstep_resolution_();
+            break;
+        default:
+            break;
         }
     }
+
 
     bool
     A4988Simulator::get_value_(A4988SimulatorPort port_idx)
     {
         return (state_ & (1 << port_idx));
     }
+
 
     void
     A4988Simulator::update_microstep_resolution_()
@@ -43,6 +58,14 @@ namespace simulator
 
         microstep_resolution_ = ((1 << v1) * (1 << (v2 * 2)) * (1 << v3));
     }
+
+
+    void
+    A4988Simulator::try_to_step_(void)
+    {
+        //stub
+    }
+
 
     A4988Simulator::A4988Simulator()
     {
@@ -62,6 +85,7 @@ namespace simulator
     {
         return microstep_resolution_;
     }
+
 
     void
     test_state_assignment_(void)
@@ -86,6 +110,7 @@ namespace simulator
         assert(((1 << MS1_PORT) | (1 << MS3_PORT)) == driverSim.state());
     }
 
+
     void
     test_microstep_cfg_()
     {
@@ -105,6 +130,12 @@ namespace simulator
         }
     }
 
+
+    void
+    test_stepping()
+    {
+        // stub
+    }
 
 
     void
