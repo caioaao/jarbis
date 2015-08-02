@@ -29,35 +29,18 @@ namespace simulator
         return (state_ & (1 << port_idx));
     }
 
-    bool
-    A4988Simulator::microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3)
-    {
-        // based on table 1 from a4988's datasheet
-        return !((ms1 ^ ms2) & ms3);
-    }
-
     void
     A4988Simulator::update_microstep_resolution_()
     {
-        static unsigned int microstep_resolution_table_[2][2][2];
-        static bool table_is_initialized_ = false;
-        if(false == table_is_initialized_)
-        {
-            table_is_initialized_ = true;
-            microstep_resolution_table_[0][0][0] = 1;
-            microstep_resolution_table_[1][0][0] = 2;
-            microstep_resolution_table_[0][1][0] = 4;
-            microstep_resolution_table_[1][1][0] = 8;
-            microstep_resolution_table_[1][1][1] = 16;
-        }
+        // Although table 1 from datasheet shows only 5 configurations for the
+        // MSx pins, page 7 explains how it really works, resulting in the
+        // formula: 2^(MS1) * 2^(MS2*2) * 2^(MS3)
+
         bool v1 = get_value_(MS1_PORT);
         bool v2 = get_value_(MS2_PORT);
         bool v3 = get_value_(MS3_PORT);
 
-        if(true == A4988Simulator::microstep_cfg_is_valid(v1, v2, v3))
-        {
-            microstep_resolution_ = microstep_resolution_table_[v1][v2][v3];
-        }
+        microstep_resolution_ = ((1 << v1) * (1 << (v2 * 2)) * (1 << v3));
     }
 
     A4988Simulator::A4988Simulator()
@@ -105,30 +88,19 @@ namespace simulator
     void
     test_microstep_cfg_()
     {
-        // A4988 datasheet, pg 6, table 1
-        static const bool ms_vals_[5][3] = {{0,0,0},
-                                            {1,0,0},
-                                            {0,1,0},
-                                            {1,1,0},
-                                            {1,1,1}};
-        static const unsigned int expected_microstep_res_[5] = {1,2,4,8,16};
-        static const int num_res = 5;
+        static const unsigned int expected_microstep_res_[8] =
+            {1, 2, 4, 8, 2, 4, 8, 16};
 
         A4988Simulator driverSim = A4988Simulator();
 
-        for(int i = 0; i < num_res; ++i)
+        for(int i = 0; i < 8; ++i)
         {
-            assert(A4988Simulator::microstep_cfg_is_valid(ms_vals_[i][0],
-                                                          ms_vals_[i][1],
-                                                          ms_vals_[i][2]));
+            driverSim.set_value(MS1_PORT, 1 & i);
+            driverSim.set_value(MS2_PORT, 2 & i);
+            driverSim.set_value(MS3_PORT, 4 & i);
 
-
-            driverSim.set_value(MS1_PORT, ms_vals_[i][0]);
-            driverSim.set_value(MS2_PORT, ms_vals_[i][1]);
-            driverSim.set_value(MS3_PORT, ms_vals_[i][2]);
-
-            assert(driverSim.microstep_resolution()
-                   == expected_microstep_res_[i]);
+            unsigned int resulting_res = driverSim.microstep_resolution();
+            assert(resulting_res == expected_microstep_res_[i]);
         }
     }
 
