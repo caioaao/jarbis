@@ -1,6 +1,5 @@
-*
-!*.cc
-!*.h
-!*.mak
-!Makefile
-!.gitignore
+*.o
+GPATH
+GRTAGS
+GTAGS
+.#.*
