@@ -9,8 +9,15 @@
 namespace simulator
 {
     void
-    A4988Simulator::set_value(A4988SimulatorPort port_idx,
-                                   bool logical_value)
+    A4988StepperMotor::step(unsigned int step_resolution,
+                            StepDirection direction)
+    {
+        // stub
+    }
+
+
+    void
+    A4988Simulator::set_value(Port port_idx, bool logical_value)
     {
         uint32_t old_state = state_;
 
@@ -34,6 +41,10 @@ namespace simulator
             break;
         case DIR_PORT:
             update_step_direction_();
+            break;
+        case NRESET_PORT:
+        case NENABLE_PORT:
+        case NSLEEP_PORT:
         default:
             break;
         }
@@ -41,7 +52,7 @@ namespace simulator
 
 
     bool
-    A4988Simulator::get_value_(A4988SimulatorPort port_idx)
+    A4988Simulator::get_value_(Port port_idx)
     {
         return !!(state_ & (1 << port_idx));
     }
@@ -66,14 +77,43 @@ namespace simulator
     void
     A4988Simulator::update_step_direction_(void)
     {
-        step_direction_ = !!(state_ & (DIR_PORT));
+        if(0 != (state_ & (DIR_PORT)))
+        {
+            step_direction_ = A4988StepperMotor::STEP_FORWARD;
+        }
+        else
+        {
+            step_direction_ = A4988StepperMotor::STEP_REVERSE;
+        }
+    }
+
+
+    bool
+    A4988Simulator::outputs_are_enabled_(void)
+    {
+        static const uint32_t NRESET_MSK = (1 << NRESET_PORT);
+        static const uint32_t NSLEEP_MSK = (1 << NSLEEP_PORT);
+        static const uint32_t NENABLE_MSK = (1 << NSLEEP_PORT);
+
+
+        return (0 == (state_ & NENABLE_MSK)) && (0 != (state_ & NRESET_MSK)) &&
+            (0 != (state_ & NSLEEP_MSK));
     }
 
 
     void
     A4988Simulator::step_(void)
     {
-        //stub
+        if(outputs_are_enabled_())
+        {
+            controlled_motor_.step(microstep_resolution_, step_direction_);
+        }
+    }
+
+    A4988StepperMotor *
+    A4988Simulator::controlled_motor(void)
+    {
+        return &controlled_motor_;
     }
 
 
@@ -87,7 +127,10 @@ namespace simulator
         set_value(NENABLE_PORT, false);
         set_value(NRESET_PORT, false);
         set_value(STEP_PORT, false);
+
+        controlled_motor_ = A4988StepperMotor();
     }
+
 
 
 #ifdef DO_SMOKE_TEST

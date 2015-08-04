@@ -4,10 +4,23 @@
 #include <stdint.h>
 
 namespace simulator
-{class A4988Simulator
+{
+    class A4988StepperMotor
     {
     public:
-        enum A4988SimulatorPort
+        enum StepDirection
+        {
+            STEP_FORWARD,
+            STEP_REVERSE
+        };
+
+        void step(unsigned int step_resolution, StepDirection direction);
+    };
+
+    class A4988Simulator
+    {
+    public:
+        enum Port
         {
             MS1_PORT,
             MS2_PORT,
@@ -20,7 +33,8 @@ namespace simulator
         };
 
         A4988Simulator();
-        void set_value(A4988SimulatorPort port_idx, bool logical_value);
+        void set_value(Port port_idx, bool logical_value);
+
 
         static bool microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3);
 
@@ -28,19 +42,22 @@ namespace simulator
         uint32_t state(void);
         unsigned int microstep_resolution(void);
         bool step_direction(void);
+        A4988StepperMotor * controlled_motor(void);
 #endif
     private:
         static const int NUM_PORTS_ = 8;
         uint32_t state_;
         unsigned int microstep_resolution_;
-        bool step_direction_;
+        A4988StepperMotor::StepDirection step_direction_;
+        A4988StepperMotor controlled_motor_;
 
-
-        bool get_value_(A4988SimulatorPort port_idx);
+        bool get_value_(Port port_idx);
         void update_microstep_resolution_(void);
         void update_step_direction_(void);
         void step_(void);
+        bool outputs_are_enabled_(void);
     };
+
 
 
 #ifdef DO_SMOKE_TEST
