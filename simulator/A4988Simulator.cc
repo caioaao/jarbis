@@ -91,7 +91,7 @@ namespace simulator
     {
         static const uint32_t NRESET_MSK = (1 << NRESET_PORT);
         static const uint32_t NSLEEP_MSK = (1 << NSLEEP_PORT);
-        static const uint32_t NENABLE_MSK = (1 << NSLEEP_PORT);
+        static const uint32_t NENABLE_MSK = (1 << NENABLE_PORT);
 
 
         return (0 == (state_ & NENABLE_MSK)) && (0 != (state_ & NRESET_MSK)) &&
