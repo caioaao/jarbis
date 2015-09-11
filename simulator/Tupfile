@@ -1,0 +1,1 @@
+: A4988Simulator.cc |> gcc -Wall -I ../ -c %f -o %o |> A4988Simulator.o
