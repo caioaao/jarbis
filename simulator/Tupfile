@@ -1,1 +1,9 @@
-: A4988Simulator.cc |> gcc -Wall -I ../ -c %f -o %o |> A4988Simulator.o
+include_rules
+
+DEP_LIBS += ../base/libbase.a
+
+SRCS += A4988Simulator.cc
+SRCS += SimMain.cc
+
+: foreach $(SRCS) |> !compile |>
+: $(DEP_LIBS) *.o |> $(CC) $(LDFLAGS) %f -o %o |> sim
