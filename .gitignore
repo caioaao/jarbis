@@ -4,3 +4,6 @@ GRTAGS
 GTAGS
 .#.*
 .tup
+*.a
+sim
+*.so
