@@ -2,9 +2,7 @@
 
 #include <stdint.h>
 
-#ifdef DO_SMOKE_TEST
-#include <cassert>
-#endif
+#include "base/debug.h"
 
 namespace simulator
 {
@@ -110,12 +108,6 @@ namespace simulator
         }
     }
 
-    A4988StepperMotor *
-    A4988Simulator::controlled_motor(void)
-    {
-        return &controlled_motor_;
-    }
-
 
     A4988Simulator::A4988Simulator()
     {
@@ -147,6 +139,13 @@ namespace simulator
     }
 
 
+    A4988StepperMotor *
+    A4988Simulator::controlled_motor(void)
+    {
+        return &controlled_motor_;
+    }
+
+
     void
     test_state_assignment_(void)
     {
@@ -155,23 +154,23 @@ namespace simulator
         static const uint32_t MS3_PORT_MSK_ = (1 << A4988Simulator::MS3_PORT);
 
         driverSim.set_value(A4988Simulator::MS1_PORT, true);
-        assert(MS1_PORT_MSK_ == driverSim.state());
+        ASSERT(MS1_PORT_MSK_ == driverSim.state());
 
         driverSim.set_value(A4988Simulator::MS3_PORT, true);
 
-        assert((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
+        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
 
         driverSim.set_value(A4988Simulator::MS3_PORT, false);
-        assert(MS1_PORT_MSK_ == driverSim.state());
+        ASSERT(MS1_PORT_MSK_ == driverSim.state());
 
         driverSim.set_value(A4988Simulator::MS3_PORT, false);
-        assert(MS1_PORT_MSK_ == driverSim.state());
+        ASSERT(MS1_PORT_MSK_ == driverSim.state());
 
         driverSim.set_value(A4988Simulator::MS3_PORT, true);
-        assert((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
+        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
 
         driverSim.set_value(A4988Simulator::MS3_PORT, true);
-        assert((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
+        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
     }
 
 
@@ -190,7 +189,7 @@ namespace simulator
             driverSim.set_value(A4988Simulator::MS3_PORT, 4 & i);
 
             unsigned int resulting_res = driverSim.microstep_resolution();
-            assert(resulting_res == expected_microstep_res_[i]);
+            ASSERT(resulting_res == expected_microstep_res_[i]);
         }
     }
 
