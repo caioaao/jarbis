@@ -3,4 +3,4 @@ include_rules
 SRCS += debug.cc
 
 : foreach $(SRCS) |> !compile |>
-: *.o |> $(AR) crs %o %f |> libbase.a
+: *.o |> $(AR) $(ARFLAGS) %o %f |> libbase.a

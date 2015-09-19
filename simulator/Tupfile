@@ -5,5 +5,7 @@ DEP_LIBS += ../base/libbase.a
 SRCS += A4988Simulator.cc
 SRCS += SimMain.cc
 
+#LDFLAGS += -v -Wl,-v
+
 : foreach $(SRCS) |> !compile |>
-: $(DEP_LIBS) *.o |> $(CC) $(LDFLAGS) %f -o %o |> sim
+: *.o $(DEP_LIBS) |> $(CC) $(LDFLAGS) %f -o %o |> sim
