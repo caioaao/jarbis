@@ -1,4 +1,5 @@
 *.o
+*.d
 GPATH
 GRTAGS
 GTAGS
@@ -7,3 +8,4 @@ GTAGS
 *.a
 sim
 *.so
+test_input.txt
