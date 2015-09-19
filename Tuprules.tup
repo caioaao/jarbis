@@ -1,8 +1,8 @@
 CFLAGS += -Wall
-CFLAGS += -O2
-CFLAGS += -I $(pwd)..
+CFLAGS += -I..
 
 CC = g++
 AR = ar
+ARFLAGS = crs
 
 !compile = |> $(CC) $(CFLAGS) -c %f -o %o |> %B.o
