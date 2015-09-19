@@ -7,11 +7,13 @@
 namespace debug
 {
 #ifdef _DO_ASSERT
-    void myAssert(std::string func, bool cond);
-#define ASSERT(x) myAssert(__FUNCTION__, x)
+    void my_assert(std::string func, bool cond);
+#define ASSERT(x) my_assert(__FUNCTION__, x)
 #else
 #define ASSERT(x)
 #endif
+
+    std::string bit_repr(int x);
 };
 
 
