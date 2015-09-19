@@ -124,8 +124,6 @@ namespace simulator
     }
 
 
-
-#ifdef DO_SMOKE_TEST
     uint32_t
     A4988Simulator::state(void)
     {
@@ -146,6 +144,7 @@ namespace simulator
     }
 
 
+#ifdef DO_SMOKE_TEST
     void
     test_state_assignment_(void)
     {

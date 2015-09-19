@@ -34,16 +34,13 @@ namespace simulator
 
         A4988Simulator();
         void set_value(Port port_idx, bool logical_value);
-
-
-        static bool microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3);
-
-#ifdef DO_SMOKE_TEST
         uint32_t state(void);
         unsigned int microstep_resolution(void);
         bool step_direction(void);
         A4988StepperMotor * controlled_motor(void);
-#endif
+
+        static bool microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3);
+
     private:
         static const int NUM_PORTS_ = 8;
         uint32_t state_;
