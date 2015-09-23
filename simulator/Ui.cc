@@ -6,6 +6,26 @@
 namespace simulator
 {
 
+    void
+    UiElement::set_id(unsigned int id)
+    {
+        id_ = id;
+    }
+
+
+    unsigned int
+    UiElement::id(void)
+    {
+        return id_;
+    }
+
+
+    void
+    UiElement::associate_ui(std::shared_ptr<Ui> ui)
+    {
+        ui_ = ui;
+    }
+
 
     Ui::Ui()
     {
@@ -22,14 +42,12 @@ namespace simulator
     void
     Ui::init_(unsigned int num_rows, unsigned int num_cols)
     {
-        lock_drawing_();
         for(int i = 0; i < 2; ++i)
         {
             buffers_[i].assign(num_rows, std::vector<int>(num_cols, 0));
         }
 
         current_back_buffer_ = 0;
-        release_drawing_();
     }
 
 
@@ -60,19 +78,15 @@ namespace simulator
     void
     Ui::update_pixel(unsigned int r, unsigned int c, int v)
     {
-        lock_drawing_();
         buffers_[current_back_buffer_][r][c] = v;
-        release_drawing_();
     }
 
 
     void
     Ui::render(void)
     {
-        lock_drawing_();
         current_back_buffer_ = !current_back_buffer_;
         buffers_[current_back_buffer_] = buffers_[!current_back_buffer_];
-        release_drawing_();
 
         Buffer_ &buffer_to_be_printed = buffers_[!current_back_buffer_];
 
@@ -93,16 +107,45 @@ namespace simulator
 
 
     void
-    Ui::lock_drawing_(void)
+    Ui::update(void)
     {
-        while(drawing_locked_);
-        drawing_locked_ = true;
+        for(std::shared_ptr<UiElement> &elm : ui_elements_)
+        {
+            elm->update();
+        }
+        for(std::shared_ptr<UiElement> &elm : ui_elements_)
+        {
+            elm->draw();
+        }
     }
 
+
+    // void
+    // Ui::lock_drawing_(void)
+    // {
+    //     while(drawing_locked_);
+    //     drawing_locked_ = true;
+    // }
+    //
+    // void
+    // Ui::release_drawing_(void)
+    // {
+    //     drawing_locked_ = false;
+    // }
+
     void
-    Ui::release_drawing_(void)
+    Ui::register_element(std::shared_ptr<UiElement> elm)
     {
-        drawing_locked_ = false;
+        if(ui_element_ids_.count(elm->id()) == 0)
+        {
+            ui_element_ids_.insert(elm->id());
+            ui_elements_.push_front(elm);
+        }
+        else
+        {
+            std::cerr << "Element " << elm->id() << " already exists"
+                      << std::endl;
+        }
     }
 
 };
