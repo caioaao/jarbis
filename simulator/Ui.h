@@ -13,7 +13,7 @@ namespace simulator
 
     class UiElement
     {
-    private:
+    protected:
         unsigned int id_;
         std::shared_ptr<Ui> ui_;
     public:
@@ -55,7 +55,7 @@ namespace simulator
         unsigned int num_rows(void);
         unsigned int num_cols(void);
 
-        void update_pixel(unsigned int r, unsigned int c, int v);
+        void update_pixel(int r, int c, int v);
 
         void render(void);
         void update(void);

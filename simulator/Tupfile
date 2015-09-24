@@ -3,6 +3,7 @@ include_rules
 DEP_LIBS += ../base/libbase.a
 
 SRCS += A4988Simulator.cc
+SRCS += Car.cc
 SRCS += Ui.cc
 SRCS += SimMain.cc
 

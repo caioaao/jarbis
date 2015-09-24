@@ -76,9 +76,14 @@ namespace simulator
     }
 
     void
-    Ui::update_pixel(unsigned int r, unsigned int c, int v)
+    Ui::update_pixel(int r, int c, int v)
     {
-        buffers_[current_back_buffer_][r][c] = v;
+        if(r >= 0 && c >= 0
+           && r < (int)buffers_[current_back_buffer_].size()
+           && c < (int)buffers_[current_back_buffer_][r].size())
+        {
+            buffers_[current_back_buffer_][r][c] = v;
+        }
     }
 
 
