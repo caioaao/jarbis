@@ -5,6 +5,7 @@
 #include <list>
 #include <unordered_set>
 #include <memory>
+#include <cstdint>
 
 namespace simulator
 {
@@ -14,14 +15,14 @@ namespace simulator
     class UiElement
     {
     protected:
-        unsigned int id_;
+        uint32_t id_;
         std::shared_ptr<Ui> ui_;
     public:
         virtual void update(void)=0;
         virtual void draw(void)=0;
 
-        void set_id(unsigned int id);
-        unsigned int id(void);
+        void set_id(uint32_t id);
+        uint32_t id(void);
 
         void associate_ui(std::shared_ptr<Ui> ui);
     };
@@ -30,32 +31,32 @@ namespace simulator
     class Ui
     {
     private:
-        typedef std::vector<std::vector<int> > Buffer_;
+        typedef std::vector<std::vector<int8_t> > Buffer_;
 
         bool drawing_locked_;
         Buffer_ buffers_[2];
-        unsigned int current_back_buffer_;
-        const static unsigned int DEFAULT_NUM_COLS_ = 30;
-        const static unsigned int DEFAULT_NUM_ROWS_ = 30;
+        bool current_back_buffer_;
+        const static uint32_t DEFAULT_NUM_COLS_ = 30;
+        const static uint32_t DEFAULT_NUM_ROWS_ = 30;
 
-        unsigned int num_rows_;
-        unsigned int num_cols_;
+        uint32_t num_rows_;
+        uint32_t num_cols_;
 
         std::list<std::shared_ptr<UiElement>> ui_elements_;
-        std::unordered_set<unsigned int> ui_element_ids_;
+        std::unordered_set<uint32_t> ui_element_ids_;
 
-        void init_(unsigned int num_rows, unsigned int num_cols);
+        void init_(uint32_t num_rows, uint32_t num_cols);
 
-        char printable_pixel_(int pixel_value);
+        char printable_pixel_(int8_t pixel_value);
 
     public:
         Ui();
-        Ui(unsigned int num_rows, unsigned int num_cols);
+        Ui(uint32_t num_rows, uint32_t num_cols);
 
-        unsigned int num_rows(void);
-        unsigned int num_cols(void);
+        uint32_t num_rows(void);
+        uint32_t num_cols(void);
 
-        void update_pixel(int r, int c, int v);
+        void update_pixel(int32_t r, int32_t c, int8_t v);
 
         void render(void);
         void update(void);

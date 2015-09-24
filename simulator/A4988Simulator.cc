@@ -1,13 +1,13 @@
 #include "simulator/A4988Simulator.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/debug.h"
 
 namespace simulator
 {
     void
-    A4988StepperMotor::step(unsigned int step_resolution,
+    A4988StepperMotor::step(uint32_t step_resolution,
                             StepDirection direction)
     {
         // stub
@@ -130,7 +130,7 @@ namespace simulator
         return state_;
     }
 
-    unsigned int
+    uint32_t
     A4988Simulator::microstep_resolution(void)
     {
         return microstep_resolution_;
@@ -187,7 +187,7 @@ namespace simulator
             driverSim.set_value(A4988Simulator::MS2_PORT, 2 & i);
             driverSim.set_value(A4988Simulator::MS3_PORT, 4 & i);
 
-            unsigned int resulting_res = driverSim.microstep_resolution();
+            uint32_t resulting_res = driverSim.microstep_resolution();
             ASSERT(resulting_res == expected_microstep_res_[i]);
         }
     }

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-
+#include <cstdint>
 
 #ifdef _DO_ASSERT
 void
@@ -20,7 +20,7 @@ debug::my_assert(std::string func, bool cond)
 
 
 std::string
-debug::bit_repr(int x)
+debug::bit_repr(int32_t x)
 {
     std::string s;
 

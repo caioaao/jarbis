@@ -1,28 +1,30 @@
 #include "simulator/Car.h"
 
+#include <cstdint>
+
 namespace simulator
 {
-    Car::Car(unsigned int r)
+    Car::Car(uint32_t r)
     {
         r_ = r;
         x_ = y_ = 0;
     }
 
-    int
+    int32_t
     Car::x(void)
     {
         return x_;
     }
 
 
-    int
+    int32_t
     Car::y(void)
     {
         return y_;
     }
 
 
-    unsigned int
+    uint32_t
     Car::r(void)
     {
         return r_;
@@ -39,12 +41,12 @@ namespace simulator
     void
     Car::draw(void)
     {
-        for(int i = x_ - (int)r_; i <= x_ + (int)r_; ++i)
+        for(int32_t i = x_ - r_; i <= (int32_t)(x_ + r_); ++i)
         {
             ui_->update_pixel(i, y_, 1);
         }
 
-        for(int i = y_ - (int)r_; i <= y_ + (int)r_; ++i)
+        for(int32_t i = y_ - r_; i <= (int32_t)(y_ + r_); ++i)
         {
             ui_->update_pixel(x_, i, 1);
         }

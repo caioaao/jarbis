@@ -2,14 +2,15 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <cstdint>
 
 #include "simulator/A4988Simulator.h"
 #include "simulator/Ui.h"
 #include "simulator/Car.h"
 #include "base/debug.h"
 
-const unsigned int UI_ROWS_ = 30;
-const unsigned int UI_COLS_ = 30;
+const uint32_t UI_ROWS_ = 30;
+const uint32_t UI_COLS_ = 30;
 
 std::shared_ptr<simulator::Ui> UI(new simulator::Ui(UI_ROWS_, UI_COLS_));
 

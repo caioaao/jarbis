@@ -7,13 +7,13 @@ namespace simulator
 {
 
     void
-    UiElement::set_id(unsigned int id)
+    UiElement::set_id(uint32_t id)
     {
         id_ = id;
     }
 
 
-    unsigned int
+    uint32_t
     UiElement::id(void)
     {
         return id_;
@@ -33,18 +33,18 @@ namespace simulator
     }
 
 
-    Ui::Ui(unsigned int num_rows, unsigned int num_cols)
+    Ui::Ui(uint32_t num_rows, uint32_t num_cols)
     {
         init_(num_rows, num_cols);
     }
 
 
     void
-    Ui::init_(unsigned int num_rows, unsigned int num_cols)
+    Ui::init_(uint32_t num_rows, uint32_t num_cols)
     {
         for(int i = 0; i < 2; ++i)
         {
-            buffers_[i].assign(num_rows, std::vector<int>(num_cols, 0));
+            buffers_[i].assign(num_rows, std::vector<int8_t>(num_cols, 0));
         }
 
         current_back_buffer_ = 0;
@@ -52,7 +52,7 @@ namespace simulator
 
 
     char
-    Ui::printable_pixel_(int pixel_value)
+    Ui::printable_pixel_(int8_t pixel_value)
     {
         char char_value;
         if(0 == pixel_value) char_value = ' ';
@@ -62,25 +62,25 @@ namespace simulator
     }
 
 
-    unsigned int
+    uint32_t
     Ui::num_rows(void)
     {
         return buffers_[0].size();
     }
 
 
-    unsigned int
+    uint32_t
     Ui::num_cols(void)
     {
         return buffers_[0][0].size();
     }
 
     void
-    Ui::update_pixel(int r, int c, int v)
+    Ui::update_pixel(int32_t r, int32_t c, int8_t v)
     {
         if(r >= 0 && c >= 0
-           && r < (int)buffers_[current_back_buffer_].size()
-           && c < (int)buffers_[current_back_buffer_][r].size())
+           && r < (int32_t)buffers_[current_back_buffer_].size()
+           && c < (int32_t)buffers_[current_back_buffer_][r].size())
         {
             buffers_[current_back_buffer_][r][c] = v;
         }
@@ -95,9 +95,9 @@ namespace simulator
 
         Buffer_ &buffer_to_be_printed = buffers_[!current_back_buffer_];
 
-        for(int i = 0; i < (int)buffer_to_be_printed.size(); ++i)
+        for(int32_t i = 0; i < (int32_t)buffer_to_be_printed.size(); ++i)
         {
-            for(int j = 0; j < (int)buffer_to_be_printed[i].size(); ++j)
+            for(int32_t j = 0; j < (int32_t)buffer_to_be_printed[i].size(); ++j)
             {
                 std::cout << printable_pixel_(buffer_to_be_printed[i][j]);
             }
@@ -119,19 +119,6 @@ namespace simulator
         }
     }
 
-
-    // void
-    // Ui::lock_drawing_(void)
-    // {
-    //     while(drawing_locked_);
-    //     drawing_locked_ = true;
-    // }
-    //
-    // void
-    // Ui::release_drawing_(void)
-    // {
-    //     drawing_locked_ = false;
-    // }
 
     void
     Ui::register_element(std::shared_ptr<UiElement> elm)

@@ -1,7 +1,7 @@
 #ifndef A4988SIMULATOR_H
 #define A4988SIMULATOR_H
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace simulator
 {
@@ -14,7 +14,7 @@ namespace simulator
             STEP_REVERSE
         };
 
-        void step(unsigned int step_resolution, StepDirection direction);
+        void step(uint32_t step_resolution, StepDirection direction);
     };
 
     class A4988Simulator
@@ -35,7 +35,7 @@ namespace simulator
         A4988Simulator();
         void set_value(Port port_idx, bool logical_value);
         uint32_t state(void);
-        unsigned int microstep_resolution(void);
+        uint32_t microstep_resolution(void);
         bool step_direction(void);
         A4988StepperMotor * controlled_motor(void);
 
@@ -44,7 +44,7 @@ namespace simulator
     private:
         static const int NUM_PORTS_ = 8;
         uint32_t state_;
-        unsigned int microstep_resolution_;
+        uint32_t microstep_resolution_;
         A4988StepperMotor::StepDirection step_direction_;
         A4988StepperMotor controlled_motor_;
 
