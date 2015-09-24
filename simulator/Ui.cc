@@ -97,11 +97,6 @@ namespace simulator
 
         for(int i = 0; i < (int)buffer_to_be_printed.size(); ++i)
         {
-            std::cout << std::endl;
-        }
-
-        for(int i = 0; i < (int)buffer_to_be_printed.size(); ++i)
-        {
             for(int j = 0; j < (int)buffer_to_be_printed[i].size(); ++j)
             {
                 std::cout << printable_pixel_(buffer_to_be_printed[i][j]);
