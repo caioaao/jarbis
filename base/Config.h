@@ -4,8 +4,9 @@
 #include <string>
 #include <unordered_map>
 #include <cstdint>
+#include <memory>
 
-namespace cfg
+namespace base
 {
     class ConfigMap
     {
@@ -15,6 +16,21 @@ namespace cfg
     public:
         void add_from_file(std::string filepath);
         int64_t get(std::string key);
+
+        static ConfigMap get_global_config(void);
+    };
+
+    class GlobalConfig
+    {
+    private:
+        static std::shared_ptr<ConfigMap> cfg_;
+        static bool is_cfg_initialized_;
+
+        static void init_cfg_(void);
+
+        GlobalConfig(){}
+    public:
+        static std::shared_ptr<ConfigMap> get_object(void);
     };
 };
 

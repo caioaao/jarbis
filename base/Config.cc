@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-namespace cfg
+namespace base
 {
     void
     ConfigMap::add_from_file(std::string filepath)
@@ -53,5 +53,28 @@ namespace cfg
         {
             return -1;
         }
+    }
+
+
+    bool GlobalConfig::is_cfg_initialized_ = false;
+    std::shared_ptr<ConfigMap> GlobalConfig::cfg_ =
+        std::shared_ptr<ConfigMap>(new ConfigMap());
+
+    void
+    GlobalConfig::init_cfg_(void)
+    {
+        // stub: reads all files
+        cfg_->add_from_file("log_cfg.txt");
+    }
+
+
+    std::shared_ptr<ConfigMap>
+    GlobalConfig::get_object(void)
+    {
+        if(!is_cfg_initialized_)
+        {
+            init_cfg_();
+        }
+        return cfg_;
     }
 };
