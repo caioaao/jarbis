@@ -39,7 +39,8 @@ namespace base
     }
 
 
-    LogStream& set_log_level_(LogStream &stream, LogLevel lv)
+    LogStream&
+    set_log_level_(LogStream &stream, LogLevel lv)
     {
         stream.set_log_level(lv);
         return stream;
