@@ -9,3 +9,5 @@ GTAGS
 sim
 *.so
 test_input.txt
+base_test
+*.test.cfg

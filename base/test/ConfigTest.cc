@@ -63,7 +63,7 @@ namespace base_test
     void
     test_load_file_(void)
     {
-        static const std::string filepath_ = "tmp_testdata1.cfg";
+        static const std::string filepath_ = "tmp_testdata1.test.cfg";
 
         CfgEntryVector_ test_values = gen_cfg_values_(10);
 
@@ -133,7 +133,7 @@ namespace base_test
             it != filepaths.end(); ++it)
         {
             ss << "cfg_test_file" << std::distance(filepaths.begin(), it)
-               << ".cfg";
+               << ".test.cfg";
 
             ss >> (*it);
 
