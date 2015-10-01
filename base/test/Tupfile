@@ -3,6 +3,7 @@ include_rules
 DEP_LIBS += $(TOP)/base/libbase.a
 
 SRCS += ConfigTest.cc
+SRCS += LoggerTest.cc
 SRCS += main.cc
 
 : foreach $(SRCS) |> !compile |>
