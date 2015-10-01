@@ -47,7 +47,7 @@ namespace base_test
         for(CfgEntryVector_::const_iterator it = test_values.begin();
             it != test_values.end(); ++it)
         {
-            ASSERT(mp.get(it->first) != it->second);
+            ASSERT(mp.get(it->first) == it->second);
         }
     }
 
