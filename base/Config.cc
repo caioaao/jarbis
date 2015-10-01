@@ -7,7 +7,7 @@
 namespace base
 {
     void
-    ConfigMap::add_from_file(std::string filepath)
+    ConfigMap::add_from_file(const std::string& filepath)
     {
         std::ifstream ifs;
 
@@ -24,7 +24,7 @@ namespace base
 
 
     void
-    ConfigMap::parse_line_(std::string line)
+    ConfigMap::parse_line_(const std::string& line)
     {
         std::stringstream linestream;
         std::string key;
@@ -43,11 +43,14 @@ namespace base
 
 
     int64_t
-    ConfigMap::get(std::string key)
+    ConfigMap::get(const std::string& key) const
     {
-        if(cfg_dict_.count(key))
+        std::unordered_map<std::string, int64_t>::const_iterator
+            it = cfg_dict_.find(key);
+
+        if(it != cfg_dict_.end())
         {
-            return cfg_dict_[key];
+            return (it->second);
         }
         else
         {
