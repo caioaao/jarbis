@@ -13,6 +13,11 @@ namespace base_test
     typedef std::vector<std::pair<std::string, int64_t> > CfgEntryVector_;
 
     void test_load_file_(void);
+    void test_load_multiple_files_(void);
+    void test_matching_entries_(const base::ConfigMap &mp,
+                                const CfgEntryVector_& entries);
+    void gen_cfg_file_(std::string filepath,
+                              const CfgEntryVector_& entries);
     CfgEntryVector_ gen_cfg_values_(size_t amt, size_t max_len = 10);
 
 
@@ -20,32 +25,40 @@ namespace base_test
     config_test(void)
     {
         test_load_file_();
+        test_load_multiple_files_();
+    }
+
+
+    void
+    test_load_multiple_files_(void)
+    {
+
     }
 
 
     void
     test_load_file_(void)
     {
-
         static const std::string filepath_ = "tmp_testdata1.cfg";
+
         CfgEntryVector_ test_values = gen_cfg_values_(10);
 
-        std::ofstream ofs;
-        ofs.open(filepath_, std::ofstream::trunc | std::ofstream::out);
-
-        for(CfgEntryVector_::const_iterator it = test_values.begin();
-            it != test_values.end(); ++it)
-        {
-            ofs << (*it).first << ' ' << (*it).second << '\n';
-        }
-
-        ofs.close();
+        gen_cfg_file_(filepath_, test_values);
 
         base::ConfigMap mp;
+
         mp.add_from_file(filepath_);
 
-        for(CfgEntryVector_::const_iterator it = test_values.begin();
-            it != test_values.end(); ++it)
+        test_matching_entries_(mp, test_values);
+    }
+
+
+    void
+    test_matching_entries_(const base::ConfigMap &mp,
+                           const CfgEntryVector_& entries)
+    {
+        for(CfgEntryVector_::const_iterator it = entries.begin();
+            it != entries.end(); ++it)
         {
             ASSERT(mp.get(it->first) == it->second);
         }
@@ -68,5 +81,21 @@ namespace base_test
         }
 
         return vals;
+    }
+
+
+    void
+    gen_cfg_file_(std::string filepath, const CfgEntryVector_& entries)
+    {
+        std::ofstream ofs;
+        ofs.open(filepath, std::ofstream::trunc | std::ofstream::out);
+
+        for(CfgEntryVector_::const_iterator it = entries.begin();
+            it != entries.end(); ++it)
+        {
+            ofs << (*it).first << ' ' << (*it).second << '\n';
+        }
+
+        ofs.close();
     }
 };
