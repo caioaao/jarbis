@@ -18,27 +18,3 @@ debug::my_assert(std::string func, std::string cond_str, bool cond)
     assert(cond);
 }
 #endif // #ifdef _DO_ASSERT
-
-
-std::string
-debug::bit_repr(int32_t x)
-{
-    std::string s;
-
-    if(0 == x)
-    {
-        s = "0";
-    }
-    else
-    {
-        while(x != 0)
-        {
-            s.push_back('0' + (x & 1));
-            x >>= 1;
-        }
-    }
-
-    std::reverse(s.begin(), s.end());
-
-    return s;
-}

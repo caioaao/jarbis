@@ -12,8 +12,6 @@ namespace debug
 #else
 #define ASSERT(x)
 #endif
-
-    std::string bit_repr(int x);
 };
 
 
