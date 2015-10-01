@@ -1,13 +1,11 @@
 include_rules
 
-DEP_LIBS += ../base/libbase.a
+DEP_LIBS += $(TOP)/base/libbase.a
 
 SRCS += A4988Simulator.cc
 SRCS += Car.cc
 SRCS += Ui.cc
 SRCS += SimMain.cc
-
-#LDFLAGS += -v -Wl,-v
 
 : foreach $(SRCS) |> !compile |>
 : *.o $(DEP_LIBS) |> $(CC) $(LDFLAGS) %f -o %o |> sim
