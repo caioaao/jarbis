@@ -3,7 +3,7 @@ include_rules
 SRCS += debug.cc
 SRCS += Logger.cc
 SRCS += Config.cc
-
+SRCS += RandUtils.cc
 
 : foreach $(SRCS) |> !compile |>
 : *.o |> $(AR) $(ARFLAGS) %o %f |> libbase.a
