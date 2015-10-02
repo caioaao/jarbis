@@ -1,7 +1,27 @@
 #include "base/Logger.h"
 
+#include <iostream>
+
+#include "base/Config.h"
+
 namespace base
 {
+    LogStream::LogStream():
+        out_(std::cout)
+    {
+        init_();
+    }
+
+
+    void
+    LogStream::init_()
+    {
+        const ConfigMap& syscfg = SysConfig::instance();
+        printable_log_level_ = static_cast<LogLevel>(
+            syscfg.get("default_loglevel"));
+        log_level_ = LogLevel::LOG_INFO;
+    }
+
 
     LogLevel
     LogStream::log_level(void)

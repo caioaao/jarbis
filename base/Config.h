@@ -12,7 +12,7 @@ namespace base
     {
     private:
         std::unordered_map<std::string, int64_t> cfg_dict_;
-        void parse_line_(const std::string& line);
+        bool parse_line_(const std::string& line);
     public:
         void add_from_file(const std::string& filepath);
         int64_t get(const std::string& key) const;

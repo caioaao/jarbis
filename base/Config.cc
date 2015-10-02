@@ -4,6 +4,10 @@
 #include <fstream>
 #include <sstream>
 
+#include "base/corelog.h"
+
+#define SYS_CFG_DIR "./"
+
 namespace base
 {
     void
@@ -14,31 +18,52 @@ namespace base
         ifs.open(filepath, std::ifstream::in);
 
         std::string line;
+        size_t line_num = 1;
         while(getline(ifs, line))
         {
-            parse_line_(line);
+            if(!parse_line_(line))
+            {
+                corelog << log_level(LogLevel::LOG_CRIT)
+                        << "Parse error at " << filepath << ':' << line_num
+                        << '\n';
+            }
+            ++line_num;
         }
 
         ifs.close();
     }
 
 
-    void
+    bool
     ConfigMap::parse_line_(const std::string& line)
     {
         std::stringstream linestream;
         std::string key;
         int64_t value;
+        bool parsed_ok = true;
 
         linestream.str(line);
 
-        linestream >> key >> value;
-
-        if(cfg_dict_.count(key))
+        if(linestream >> key >> value)
         {
-            // stub
+            if(cfg_dict_.count(key))
+            {
+                corelog << log_level(LogLevel::LOG_CRIT) << "Key " << key
+                        << " is duplicated. Ignoring last value (" << value << ")"
+                        << '\n';
+                parsed_ok = false;
+            }
+            cfg_dict_[key] = value;
         }
-        cfg_dict_[key] = value;
+        else
+        {
+            corelog << log_level(LogLevel::LOG_CRIT)
+                    << "Invalid line ignored. Raw line: " << line << '\n';
+
+            parsed_ok = false;
+        }
+
+        return parsed_ok;
     }
 
 

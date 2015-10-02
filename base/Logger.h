@@ -38,11 +38,10 @@ namespace base
         std::ostream &out_;
         LogLevel log_level_;
         LogLevel printable_log_level_;
+
+        void init_();
     public:
-        LogStream(std::ostream& _out)
-            : out_(_out),
-              log_level_(LogLevel::LOG_INFO),
-              printable_log_level_(LogLevel::LOG_NONE){ }
+        LogStream();
 
         LogLevel log_level(void);
         LogLevel printable_log_level(void);
