@@ -1,7 +1,9 @@
+#include "simulator/Ui.h"
+
 #include <iostream>
 #include <algorithm>
 
-#include "simulator/Ui.h"
+
 
 namespace simulator
 {
