@@ -1,7 +1,7 @@
 #Jarbis
 
-Simple 2wheeled mobile robot. Going to use a beaglebone, two stepper motors and
-IR sensors.
+Simple two-wheeled mobile robot. Going to use a beaglebone, but intend to
+support other platforms as well.
 
 ##Software architecture
 
