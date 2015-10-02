@@ -16,6 +16,7 @@ namespace base_test
 
     void test_load_file_(void);
     void test_load_multiple_files_(void);
+    void test_load_invalid_file_(void);
     void test_matching_entries_(const base::ConfigMap &mp,
                                 const CfgEntryVector_& entries);
     void gen_cfg_file_(std::string filepath,
@@ -24,11 +25,34 @@ namespace base_test
     std::vector<std::string> gen_filepaths_(size_t amt = 10);
 
 
+
     void
     config_test(void)
     {
         test_load_file_();
         test_load_multiple_files_();
+        test_load_invalid_file_();
+    }
+
+
+    void
+    test_load_invalid_file_(void)
+    {
+        std::string filepath = "invalid_file.test.cfg";
+        CfgEntryVector_ valid_entries = gen_cfg_values_(10);
+
+
+        gen_cfg_file_(filepath, valid_entries);
+
+        std::ofstream ofs;
+        ofs.open(filepath, std::ofstream::out | std::ofstream::app);
+
+        ofs << "INVALIDLINE\n";
+        ofs.close();
+
+        base::ConfigMap cfg;
+        cfg.add_from_file(filepath);
+        test_matching_entries_(cfg, valid_entries);
     }
 
 
