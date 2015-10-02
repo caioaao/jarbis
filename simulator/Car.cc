@@ -41,14 +41,6 @@ namespace simulator
     void
     Car::draw(void)
     {
-        for(int32_t i = x_ - r_; i <= (int32_t)(x_ + r_); ++i)
-        {
-            ui_->update_pixel(i, y_, 1);
-        }
-
-        for(int32_t i = y_ - r_; i <= (int32_t)(y_ + r_); ++i)
-        {
-            ui_->update_pixel(x_, i, 1);
-        }
+        // stub
     }
 };

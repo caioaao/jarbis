@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
-
+#include <SDL/SDL.h>
 
 
 namespace simulator
@@ -26,85 +26,6 @@ namespace simulator
     UiElement::associate_ui(std::shared_ptr<Ui> ui)
     {
         ui_ = ui;
-    }
-
-
-    Ui::Ui()
-    {
-        init_(DEFAULT_NUM_ROWS_, DEFAULT_NUM_COLS_);
-    }
-
-
-    Ui::Ui(uint32_t num_rows, uint32_t num_cols)
-    {
-        init_(num_rows, num_cols);
-    }
-
-
-    void
-    Ui::init_(uint32_t num_rows, uint32_t num_cols)
-    {
-        for(int i = 0; i < 2; ++i)
-        {
-            buffers_[i].assign(num_rows, std::vector<int8_t>(num_cols, 0));
-        }
-
-        current_back_buffer_ = 0;
-    }
-
-
-    char
-    Ui::printable_pixel_(int8_t pixel_value)
-    {
-        char char_value;
-        if(0 == pixel_value) char_value = ' ';
-        else char_value = '#';
-
-        return char_value;
-    }
-
-
-    uint32_t
-    Ui::num_rows(void)
-    {
-        return buffers_[0].size();
-    }
-
-
-    uint32_t
-    Ui::num_cols(void)
-    {
-        return buffers_[0][0].size();
-    }
-
-    void
-    Ui::update_pixel(int32_t r, int32_t c, int8_t v)
-    {
-        if(r >= 0 && c >= 0
-           && r < (int32_t)buffers_[current_back_buffer_].size()
-           && c < (int32_t)buffers_[current_back_buffer_][r].size())
-        {
-            buffers_[current_back_buffer_][r][c] = v;
-        }
-    }
-
-
-    void
-    Ui::render(void)
-    {
-        current_back_buffer_ = !current_back_buffer_;
-        buffers_[current_back_buffer_] = buffers_[!current_back_buffer_];
-
-        Buffer_ &buffer_to_be_printed = buffers_[!current_back_buffer_];
-
-        for(int32_t i = 0; i < (int32_t)buffer_to_be_printed.size(); ++i)
-        {
-            for(int32_t j = 0; j < (int32_t)buffer_to_be_printed[i].size(); ++j)
-            {
-                std::cout << printable_pixel_(buffer_to_be_printed[i][j]);
-            }
-            std::cout << std::endl;
-        }
     }
 
 
@@ -137,4 +58,23 @@ namespace simulator
         }
     }
 
+
+    SdlUi::SdlUi()
+    {
+        init_();
+    }
+
+
+    void
+    SdlUi::render(void)
+    {
+        //stub
+    }
+
+
+    void
+    SdlUi::init_(void)
+    {
+
+    }
 };

@@ -1,6 +1,7 @@
 include_rules
 
 DEP_LIBS += $(TOP)/base/libbase.a
+LDFLAGS += -lSDL
 
 SRCS += A4988Simulator.cc
 SRCS += Car.cc

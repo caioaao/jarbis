@@ -9,10 +9,7 @@
 #include "simulator/Car.h"
 #include "base/debug.h"
 
-const uint32_t UI_ROWS_ = 30;
-const uint32_t UI_COLS_ = 30;
-
-std::shared_ptr<simulator::Ui> UI(new simulator::Ui(UI_ROWS_, UI_COLS_));
+std::shared_ptr<simulator::Ui> UI(new simulator::SdlUi());
 
 
 int main()
