@@ -59,25 +59,18 @@ namespace base
     }
 
 
-    bool GlobalConfig::is_cfg_initialized_ = false;
-    std::shared_ptr<ConfigMap> GlobalConfig::cfg_ =
-        std::shared_ptr<ConfigMap>(new ConfigMap());
-
-    void
-    GlobalConfig::init_cfg_(void)
+    const ConfigMap&
+    SysConfig::instance(void)
     {
-        // stub: reads all files
-        cfg_->add_from_file("log_cfg.txt");
-    }
+        static bool is_initialized_ = false;
+        static ConfigMap * instance_ = new ConfigMap();
 
-
-    std::shared_ptr<ConfigMap>
-    GlobalConfig::get_object(void)
-    {
-        if(!is_cfg_initialized_)
+        if(!is_initialized_)
         {
-            init_cfg_();
+            is_initialized_ = true;
+            instance_->add_from_file(SYS_CFG_DIR "general.cfg");
         }
-        return cfg_;
+
+        return *instance_;
     }
 };

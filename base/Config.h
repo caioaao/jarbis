@@ -20,17 +20,12 @@ namespace base
         static ConfigMap get_global_config(void);
     };
 
-    class GlobalConfig
+    class SysConfig : public ConfigMap
     {
     private:
-        static std::shared_ptr<ConfigMap> cfg_;
-        static bool is_cfg_initialized_;
-
-        static void init_cfg_(void);
-
-        GlobalConfig(){}
+        SysConfig(){}
     public:
-        static std::shared_ptr<ConfigMap> get_object(void);
+        static const ConfigMap& instance(void);
     };
 };
 
