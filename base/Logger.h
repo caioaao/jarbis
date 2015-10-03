@@ -71,6 +71,8 @@ namespace base
 
 
     LogStreamManip<LogLevel> log_level(LogLevel lv);
+
+    extern LogStream corelog;
 };
 
 #endif

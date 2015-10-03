@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "base/corelog.h"
+#include "base/Logger.h"
 
 #define SYS_CFG_DIR "./"
 

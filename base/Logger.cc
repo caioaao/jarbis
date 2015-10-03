@@ -6,6 +6,8 @@
 
 namespace base
 {
+    LogStream corelog;
+
     LogStream::LogStream():
         out_(std::cout)
     {
