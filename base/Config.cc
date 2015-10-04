@@ -23,7 +23,7 @@ namespace base
         {
             if(!parse_line_(line))
             {
-                corelog << log_level(LogLevel::LOG_CRIT)
+                corelog() << log_level(LogLevel::LOG_CRIT)
                         << "Parse error at " << filepath << ':' << line_num
                         << '\n';
             }
@@ -48,7 +48,7 @@ namespace base
         {
             if(cfg_dict_.count(key))
             {
-                corelog << log_level(LogLevel::LOG_CRIT) << "Key " << key
+                corelog() << log_level(LogLevel::LOG_CRIT) << "Key " << key
                         << " is duplicated. Ignoring last value (" << value << ")"
                         << '\n';
                 parsed_ok = false;
@@ -57,7 +57,7 @@ namespace base
         }
         else
         {
-            corelog << log_level(LogLevel::LOG_CRIT)
+            corelog() << log_level(LogLevel::LOG_CRIT)
                     << "Invalid line ignored. Raw line: " << line << '\n';
 
             parsed_ok = false;

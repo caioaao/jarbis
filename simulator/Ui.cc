@@ -1,13 +1,10 @@
 #include "simulator/Ui.h"
 
-#include <iostream>
-#include <algorithm>
-#include <SDL/SDL.h>
+#include "base/Logger.h"
 
 
 namespace simulator
 {
-
     void
     UiElement::set_id(uint32_t id)
     {
@@ -23,23 +20,9 @@ namespace simulator
 
 
     void
-    UiElement::associate_ui(std::shared_ptr<Ui> ui)
+    UiElement::set_ui(std::shared_ptr<Ui> ui)
     {
         ui_ = ui;
-    }
-
-
-    void
-    Ui::update(void)
-    {
-        for(std::shared_ptr<UiElement> &elm : ui_elements_)
-        {
-            elm->update();
-        }
-        for(std::shared_ptr<UiElement> &elm : ui_elements_)
-        {
-            elm->draw();
-        }
     }
 
 
@@ -53,28 +36,44 @@ namespace simulator
         }
         else
         {
-            std::cerr << "Element " << elm->id() << " already exists"
-                      << std::endl;
+            base::corelog() << base::log_level(base::LOG_ERR)
+                            << "Element " << elm->id() << " already exists\n";
         }
     }
 
 
-    SdlUi::SdlUi()
+    uint8_t UiColor::r(void)
     {
-        init_();
+        return r_;
     }
 
 
-    void
-    SdlUi::render(void)
+    uint8_t UiColor::g(void)
     {
-        //stub
+        return g_;
     }
 
 
-    void
-    SdlUi::init_(void)
+    uint8_t UiColor::b(void)
     {
+        return b_;
+    }
 
+
+    uint8_t UiColor::set_r(uint8_t r)
+    {
+        r_ = r;
+    }
+
+
+    uint8_t UiColor::set_g(uint8_t g)
+    {
+        g_ = g;
+    }
+
+
+    uint8_t UiColor::set_b(uint8_t b)
+    {
+        b_ = b;
     }
 };

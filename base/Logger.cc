@@ -6,7 +6,14 @@
 
 namespace base
 {
-    LogStream corelog;
+    LogStream&
+    corelog(void)
+    {
+        static LogStream *ls = new LogStream();
+
+        return *ls;
+    }
+
 
     LogStream::LogStream():
         out_(std::cout)

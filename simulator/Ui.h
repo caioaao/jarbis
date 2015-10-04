@@ -5,12 +5,19 @@
 #include <list>
 #include <unordered_set>
 #include <memory>
+#include <string>
+#include <utility>
+
 #include <cstdint>
 
 namespace simulator
 {
-    class UiElement;
+    const size_t MAIN_WINDOW_WIDTH = 1024;
+    const size_t MAIN_WINDOW_HEIGHT = 1024;
+
     class Ui;
+    class UiElement;
+    class UiColor;
 
     class UiElement
     {
@@ -18,13 +25,12 @@ namespace simulator
         uint32_t id_;
         std::shared_ptr<Ui> ui_;
     public:
-        virtual void update(void)=0;
         virtual void draw(void)=0;
 
         void set_id(uint32_t id);
         uint32_t id(void);
 
-        void associate_ui(std::shared_ptr<Ui> ui);
+        void set_ui(std::shared_ptr<Ui> ui);
     };
 
 
@@ -36,7 +42,14 @@ namespace simulator
 
     public:
         virtual void render(void)=0;
-        void update(void);
+        virtual bool ui_exited(void)=0;
+        virtual std::shared_ptr<UiElement> create_polygon(
+            std::vector<std::pair<int64_t, int64_t> > vertices,
+            UiColor color)=0;
+//         virtual shared_ptr<UiElement> create_dot(
+//             std::pair<int64_t, int64_t> position,
+//             UiColor color)=0;
+
 
         // void lock_drawing_(void);
         // void release_drawing_(void);
@@ -45,13 +58,21 @@ namespace simulator
     };
 
 
-    class SdlUi: public Ui
+    class UiColor
     {
     private:
-        void init_(void);
+        uint8_t r_, g_, b_;
     public:
-        SdlUi();
-        virtual void render(void);
+        UiColor(uint8_t r, uint8_t g, uint8_t b)
+            :r_(r), g_(g), b_(b) { }
+
+        uint8_t r(void);
+        uint8_t g(void);
+        uint8_t b(void);
+
+        uint8_t set_r(uint8_t r);
+        uint8_t set_g(uint8_t g);
+        uint8_t set_b(uint8_t b);
     };
 };
 

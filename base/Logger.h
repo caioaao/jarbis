@@ -72,7 +72,7 @@ namespace base
 
     LogStreamManip<LogLevel> log_level(LogLevel lv);
 
-    extern LogStream corelog;
+    LogStream& corelog(void);
 };
 
 #endif
