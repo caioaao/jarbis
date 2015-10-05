@@ -20,15 +20,10 @@ namespace simulator
 
 
     void
-    UiElement::set_ui(std::shared_ptr<Ui> ui)
-    {
-        ui_ = ui;
-    }
-
-
-    void
     Ui::register_element(std::shared_ptr<UiElement> elm)
     {
+        base::corelog() << base::log_level(base::LOG_INFO)
+                        << "Registering element\n";
         if(ui_element_ids_.count(elm->id()) == 0)
         {
             ui_element_ids_.insert(elm->id());
@@ -38,6 +33,19 @@ namespace simulator
         {
             base::corelog() << base::log_level(base::LOG_ERR)
                             << "Element " << elm->id() << " already exists\n";
+        }
+
+        base::corelog() << base::log_level(base::LOG_INFO)
+                        << "Registered element\n";
+    }
+
+
+    void
+    Ui::draw_elements_(void)
+    {
+        for(std::shared_ptr<UiElement>& elm : ui_elements_)
+        {
+            elm->draw();
         }
     }
 
@@ -60,19 +68,19 @@ namespace simulator
     }
 
 
-    uint8_t UiColor::set_r(uint8_t r)
+    void UiColor::set_r(uint8_t r)
     {
         r_ = r;
     }
 
 
-    uint8_t UiColor::set_g(uint8_t g)
+    void UiColor::set_g(uint8_t g)
     {
         g_ = g;
     }
 
 
-    uint8_t UiColor::set_b(uint8_t b)
+    void UiColor::set_b(uint8_t b)
     {
         b_ = b;
     }

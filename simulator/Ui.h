@@ -23,14 +23,12 @@ namespace simulator
     {
     protected:
         uint32_t id_;
-        std::shared_ptr<Ui> ui_;
+
     public:
         virtual void draw(void)=0;
 
         void set_id(uint32_t id);
         uint32_t id(void);
-
-        void set_ui(std::shared_ptr<Ui> ui);
     };
 
 
@@ -46,6 +44,7 @@ namespace simulator
         virtual std::shared_ptr<UiElement> create_polygon(
             std::vector<std::pair<int64_t, int64_t> > vertices,
             UiColor color)=0;
+        void draw_elements_(void);
 //         virtual shared_ptr<UiElement> create_dot(
 //             std::pair<int64_t, int64_t> position,
 //             UiColor color)=0;
@@ -70,9 +69,9 @@ namespace simulator
         uint8_t g(void);
         uint8_t b(void);
 
-        uint8_t set_r(uint8_t r);
-        uint8_t set_g(uint8_t g);
-        uint8_t set_b(uint8_t b);
+        void set_r(uint8_t r);
+        void set_g(uint8_t g);
+        void set_b(uint8_t b);
     };
 };
 

@@ -1,10 +1,16 @@
 include_rules
 
+CFLAGS += -DGLEW_STATIC
+
 DEP_LIBS += $(TOP)/base/libbase.a
-LDFLAGS += -lSDL
+
+LDFLAGS += -lGL
+LDFLAGS += -lglfw
+LDFLAGS += -lGLEW
 
 SRCS += A4988Simulator.cc
 SRCS += Ui.cc
+SRCS += OpenglUi.cc
 SRCS += SimMain.cc
 
 : foreach $(SRCS) |> !compile |>
