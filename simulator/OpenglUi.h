@@ -2,8 +2,10 @@
 #define OPENGLUI_H
 
 #include <memory>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "simulator/Ui.h"
 
@@ -41,6 +43,7 @@ namespace simulator
         double normalize_rgb(uint8_t val);
 
         GLint uniform_color_location(void);
+        GLint uniform_transform_location(void);
     };
 
 
@@ -53,6 +56,7 @@ namespace simulator
         GLuint vao_id_;
         GLuint vbo_id_;
         std::vector<GLfloat> vertices_gl_;
+        glm::mat4 transform_;
 
     public:
         OpenglUiPolygon(

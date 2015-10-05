@@ -4,6 +4,9 @@
 #include <sstream>
 #include <algorithm>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "base/Config.h"
 #include "base/Logger.h"
 #include "base/debug.h"
@@ -114,6 +117,13 @@ namespace simulator
     OpenglUi::uniform_color_location(void)
     {
         return glGetUniformLocation(default_program_, "triang_color");
+    }
+
+
+    GLint
+    OpenglUi::uniform_transform_location(void)
+    {
+        return glGetUniformLocation(default_program_, "trans");
     }
 
 
@@ -258,6 +268,14 @@ namespace simulator
         glUniform3f(uni_color, ui_->normalize_rgb(color_.r()),
                     ui_->normalize_rgb(color_.g()),
                     ui_->normalize_rgb(color_.b()));
+
+        // transform_ = glm::rotate(transform_, glm::radians(180.f),
+        //                          glm::vec3(.0f, .0f, 1.f));
+
+        GLint uni_trans = ui_->uniform_transform_location();
+        glUniformMatrix4fv(uni_trans, 1, GL_FALSE, glm::value_ptr(transform_));
+
+
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, vertices_.size());
         //glDrawElements(GL_TRIANGLES, elements_gl_.size(), GL_UNSIGNED_INT, 0);
