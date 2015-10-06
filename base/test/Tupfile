@@ -4,6 +4,7 @@ DEP_LIBS += $(TOP)/base/libbase.a
 
 SRCS += ConfigTest.cc
 SRCS += LoggerTest.cc
+SRCS += LinAlgTest.cc
 SRCS += main.cc
 
 : foreach $(SRCS) |> !compile |>
