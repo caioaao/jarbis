@@ -14,6 +14,7 @@ namespace base_test
     void test_scale_(void);
     void test_mult_(void);
     void test_sum_(void);
+    void test_print_(void);
 
     template<typename T, size_t R, size_t C>
     void check_matrix_(const base::Matrix<T,R,C>& mat,
@@ -29,6 +30,7 @@ namespace base_test
         test_scale_();
         test_mult_();
         test_sum_();
+        test_print_();
     }
 
 
@@ -174,6 +176,16 @@ namespace base_test
 
     }
 
+
+    void
+    test_print_(void)
+    {
+        base::corelog() << base::log_level(base::LOG_INFO)
+                         << base::Matrix<int32_t, 2, 3>() << '\n';
+
+        base::corelog() << base::log_level(base::LOG_INFO)
+                        << base::identity_matrix<int32_t, 2>() << '\n';
+    }
 
 
     template<typename T, size_t R, size_t C>
