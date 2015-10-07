@@ -49,6 +49,70 @@ namespace base
                 return mat_[idx];
             }
 
+        const Matrix<T, ROWS, COLS> scale(T val)
+            {
+                Matrix<T, ROWS, COLS> mat;
+
+                for(unsigned i = 0; i < ROWS; ++i)
+                {
+                    for(unsigned j = 0; j < COLS; ++j)
+                    {
+                        mat[i][j] = val * mat_[i][j];
+                    }
+                }
+
+                return mat;
+            }
+
+        template<size_t COLS2>
+        Matrix<T, ROWS, COLS2> operator*(const Matrix<T, COLS, COLS2> & rhs)
+            {
+                Matrix<T, ROWS, COLS2> res;
+                for(unsigned i = 0; i < ROWS; ++i)
+                {
+                    for(unsigned j = 0; j < COLS2; ++j)
+                    {
+                        for(unsigned k = 0; k < COLS; ++k)
+                        {
+                            res[i][j] += (*this)[i][k] * rhs[k][j];
+                        }
+                    }
+                }
+
+                return res;
+            }
+
+
+        Matrix<T, ROWS, COLS> operator+(const Matrix<T, COLS, COLS> & rhs)
+            {
+                Matrix<T, ROWS, COLS> res;
+                for(unsigned i = 0; i < ROWS; ++i)
+                {
+                    for(unsigned j = 0; j < COLS; ++j)
+                    {
+                        res[i][j] = (*this)[i][j] + rhs[i][j];
+                    }
+                }
+
+                return res;
+            }
+
+
+        Matrix<T, ROWS, COLS> operator-(const Matrix<T, COLS, COLS> & rhs)
+            {
+                Matrix<T, ROWS, COLS> res;
+                for(unsigned i = 0; i < ROWS; ++i)
+                {
+                    for(unsigned j = 0; j < COLS; ++j)
+                    {
+                        res[i][j] = (*this)[i][j] - rhs[i][j];
+                    }
+                }
+
+                return res;
+            }
+
+
         size_t rows() const {return mat_.size(); }
         size_t cols() const {return mat_[0].size(); }
     };
