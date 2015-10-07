@@ -73,6 +73,6 @@ namespace base
     LogStreamManip<LogLevel> log_level(LogLevel lv);
 
     LogStream& corelog(void);
-};
+}
 
 #endif

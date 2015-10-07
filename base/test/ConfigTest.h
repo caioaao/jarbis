@@ -4,6 +4,6 @@
 namespace base_test
 {
     void config_test(void);
-};
+}
 
 #endif

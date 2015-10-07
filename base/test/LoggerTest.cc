@@ -6,4 +6,4 @@ namespace base_test
     {
 
     }
-};
+}

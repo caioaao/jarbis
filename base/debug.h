@@ -12,7 +12,7 @@ namespace debug
 #else
 #define ASSERT(x)
 #endif
-};
+}
 
 
 #endif

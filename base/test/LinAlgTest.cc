@@ -77,4 +77,4 @@ namespace base_test
             }
         }
     }
-};
+}

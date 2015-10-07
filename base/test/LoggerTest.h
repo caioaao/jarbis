@@ -4,7 +4,7 @@
 namespace base_test
 {
     void logger_test(void);
-};
+}
 
 
 #endif

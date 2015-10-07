@@ -65,5 +65,5 @@ namespace base
 
         return identity_mat;
     }
-};
+}
 #endif
