@@ -6,10 +6,8 @@
 #include <cstdint>
 #include <memory>
 
-namespace base
-{
-    class ConfigMap
-    {
+namespace base {
+    class ConfigMap {
     private:
         std::unordered_map<std::string, int64_t> cfg_dict_;
         bool parse_line_(const std::string& line);
@@ -20,8 +18,7 @@ namespace base
         static ConfigMap get_global_config(void);
     };
 
-    class SysConfig : public ConfigMap
-    {
+    class SysConfig : public ConfigMap {
     private:
         SysConfig(){}
     public:

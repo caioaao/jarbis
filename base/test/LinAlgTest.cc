@@ -6,8 +6,7 @@
 #include "base/Logger.h"
 #include "base/debug.h"
 
-namespace base_test
-{
+namespace base_test {
     void test_create_mat_(void);
     void test_create_identity_mat_(void);
     void test_transpose_(void);
@@ -22,8 +21,7 @@ namespace base_test
 
 
     void
-    lin_alg_test(void)
-    {
+    lin_alg_test(void) {
         test_create_mat_();
         test_create_identity_mat_();
         test_transpose_();
@@ -35,14 +33,12 @@ namespace base_test
 
 
     void
-    test_create_mat_(void)
-    {
+    test_create_mat_(void) {
         const size_t ROWS = 10;
         const size_t COLS = 10;
         std::array<std::array<uint32_t, COLS>, ROWS> expected_res;
 
-        for(unsigned i = 0; i < ROWS; ++i)
-        {
+        for(unsigned i = 0; i < ROWS; ++i) {
             expected_res[i].fill(0);
         }
 
@@ -53,13 +49,11 @@ namespace base_test
 
 
     void
-    test_create_identity_mat_(void)
-    {
+    test_create_identity_mat_(void) {
         const size_t MAT_SZ = 10;
         std::array<std::array<uint32_t, MAT_SZ>, MAT_SZ> expected_res;
 
-        for(unsigned i = 0; i < MAT_SZ; ++i)
-        {
+        for(unsigned i = 0; i < MAT_SZ; ++i) {
             expected_res[i].fill(0);
             expected_res[i][i] = 1;
         }
@@ -72,8 +66,7 @@ namespace base_test
 
 
     void
-    test_transpose_(void)
-    {
+    test_transpose_(void) {
         const size_t ROWS = 4;
         const size_t COLS = 2;
         std::array<std::array<int32_t, ROWS>, COLS> expected_res;
@@ -93,8 +86,7 @@ namespace base_test
 
 
     void
-    test_scale_(void)
-    {
+    test_scale_(void) {
         const size_t ROWS = 2;
         const size_t COLS = 4;
         std::array<std::array<int32_t, COLS>, ROWS> expected_res;
@@ -112,8 +104,7 @@ namespace base_test
 
 
     void
-    test_mult_(void)
-    {
+    test_mult_(void) {
         std::array<std::array<int32_t, 2>, 2> expected0;
         expected0[0] = {21, 38};
         expected0[1] = {48, 96};
@@ -154,8 +145,7 @@ namespace base_test
 
 
     void
-    test_sum_(void)
-    {
+    test_sum_(void) {
         base::Matrix<int32_t, 2, 2> mat0;
         mat0[0] = {2, 3};
         mat0[1] = {4, 8};
@@ -178,8 +168,7 @@ namespace base_test
 
 
     void
-    test_print_(void)
-    {
+    test_print_(void) {
         base::corelog() << base::log_level(base::LOG_INFO)
                          << base::Matrix<int32_t, 2, 3>() << '\n';
 
@@ -191,15 +180,12 @@ namespace base_test
     template<typename T, size_t R, size_t C>
     void
     check_matrix_(const base::Matrix<T, R, C>& mat,
-                  const std::array<std::array<T, C>, R>& expected_res)
-    {
+                  const std::array<std::array<T, C>, R>& expected_res) {
         ASSERT(R == mat.rows());
         ASSERT(C == mat.cols());
 
-        for(unsigned i = 0; i < R; ++i)
-        {
-            for(unsigned j = 0; j < C; ++j)
-            {
+        for(unsigned i = 0; i < R; ++i) {
+            for(unsigned j = 0; j < C; ++j) {
                 ASSERT(expected_res[i][j] == mat[i][j]);
             }
         }

@@ -7,10 +7,8 @@
 
 #ifdef _DO_ASSERT
 void
-debug::my_assert(std::string func, std::string cond_str, bool cond)
-{
-    if(!cond)
-    {
+debug::my_assert(std::string func, std::string cond_str, bool cond) {
+    if(!cond) {
         std::cerr << "assert failed at function " << func << std::endl;
         std::cerr << "Assert condition: " << cond_str << std::endl;
     }

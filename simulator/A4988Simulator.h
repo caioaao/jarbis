@@ -3,13 +3,10 @@
 
 #include <cstdint>
 
-namespace simulator
-{
-    class A4988StepperMotor
-    {
+namespace simulator {
+    class A4988StepperMotor {
     public:
-        enum StepDirection
-        {
+        enum StepDirection {
             STEP_FORWARD,
             STEP_REVERSE
         };
@@ -17,11 +14,9 @@ namespace simulator
         void step(uint32_t step_resolution, StepDirection direction);
     };
 
-    class A4988Simulator
-    {
+    class A4988Simulator {
     public:
-        enum Port
-        {
+        enum Port {
             MS1_PORT,
             MS2_PORT,
             MS3_PORT,

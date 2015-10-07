@@ -9,10 +9,8 @@
 
 #include "simulator/Ui.h"
 
-namespace simulator
-{
-    class OpenglUi: public Ui
-    {
+namespace simulator {
+    class OpenglUi: public Ui {
     private:
         GLFWwindow * window_;
         static bool glfw_initialized_;
@@ -47,8 +45,7 @@ namespace simulator
     };
 
 
-    class OpenglUiPolygon: public UiElement
-    {
+    class OpenglUiPolygon: public UiElement {
     private:
         OpenglUi* ui_;
         UiColor color_;

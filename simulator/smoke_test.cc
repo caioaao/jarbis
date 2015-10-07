@@ -4,8 +4,7 @@
 
 #include <iostream>
 
-int main()
-{
+int main() {
     std::cout << "----------------------" << std::endl;
 
     std::cout << "Testing A4988Simulator" << std::endl;

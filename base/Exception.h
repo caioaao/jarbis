@@ -5,10 +5,8 @@
 
 #include <base/Logger.h>
 
-namespace base
-{
-    class Exception
-    {
+namespace base {
+    class Exception {
     private:
         std::string desc_;
     public:
@@ -19,8 +17,7 @@ namespace base
 
 
     template<typename T>
-    T exception(std::string desc)
-    {
+    T exception(std::string desc) {
         T ex;
         static_cast<Exception>(ex).set_desc(desc);
 

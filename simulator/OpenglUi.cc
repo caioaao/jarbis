@@ -13,28 +13,23 @@
 
 #include "simulator/Ui.h"
 
-namespace simulator
-{
-    OpenglUi::OpenglUi()
-    {
+namespace simulator {
+    OpenglUi::OpenglUi() {
         init_();
     }
 
 
-    OpenglUi::~OpenglUi()
-    {
+    OpenglUi::~OpenglUi() {
         glfwDestroyWindow(window_);
         glfwTerminate();
     }
 
 
     void
-    OpenglUi::init_(void)
-    {
+    OpenglUi::init_(void) {
         glfwSetErrorCallback(glfw_err_callback_);
 
-        if(!glfwInit())
-        {
+        if(!glfwInit()) {
             throw base::exception<UiInitException>("GLFW failed to initialize");
         }
 
@@ -49,8 +44,7 @@ namespace simulator
         window_ = glfwCreateWindow(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT,
                                    "Simulator", nullptr, nullptr);
 
-        if(nullptr == window_)
-        {
+        if(nullptr == window_) {
             throw base::exception<UiInitException>("Failed to create window");
         }
 
@@ -58,8 +52,7 @@ namespace simulator
         glfwSwapInterval(1);
 
         glewExperimental = true;
-        if(GLEW_OK != glewInit())
-        {
+        if(GLEW_OK != glewInit()) {
             throw base::exception<UiInitException>("GLEW failed to initialize");
         }
 
@@ -73,8 +66,7 @@ namespace simulator
 
 
     void
-    OpenglUi::render(void)
-    {
+    OpenglUi::render(void) {
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Starting rendering\n";
         glClear(GL_COLOR_BUFFER_BIT);
@@ -90,8 +82,7 @@ namespace simulator
 
 
     double
-    OpenglUi::normalize_xcoord(int64_t x_coord)
-    {
+    OpenglUi::normalize_xcoord(int64_t x_coord) {
         const base::ConfigMap& cfg = base::SysConfig::instance();
         ASSERT(cfg.get("size_x") > 0);
         return x_coord / (double)cfg.get("size_x");
@@ -99,8 +90,7 @@ namespace simulator
 
 
     double
-    OpenglUi::normalize_ycoord(int64_t y_coord)
-    {
+    OpenglUi::normalize_ycoord(int64_t y_coord) {
         const base::ConfigMap& cfg = base::SysConfig::instance();
         ASSERT(cfg.get("size_y") > 0);
         return y_coord / (double)cfg.get("size_y");
@@ -108,29 +98,25 @@ namespace simulator
 
 
     double
-    OpenglUi::normalize_rgb(uint8_t val)
-    {
+    OpenglUi::normalize_rgb(uint8_t val) {
         return val / (double) ((1 << sizeof(val)) - 1);
     }
 
     GLint
-    OpenglUi::uniform_color_location(void)
-    {
+    OpenglUi::uniform_color_location(void) {
         return glGetUniformLocation(default_program_, "triang_color");
     }
 
 
     GLint
-    OpenglUi::uniform_transform_location(void)
-    {
+    OpenglUi::uniform_transform_location(void) {
         return glGetUniformLocation(default_program_, "trans");
     }
 
 
     std::shared_ptr<UiElement>
     OpenglUi::create_polygon(std::vector<std::pair<int64_t, int64_t> > vertices,
-                             UiColor color)
-    {
+                             UiColor color) {
         std::shared_ptr<UiElement> obj(new OpenglUiPolygon(this, vertices,
                                                            color));
 
@@ -140,8 +126,7 @@ namespace simulator
 
 
     void
-    OpenglUi::glfw_err_callback_(int error_code, const char * desc)
-    {
+    OpenglUi::glfw_err_callback_(int error_code, const char * desc) {
         base::corelog() << base::log_level(base::LOG_ERR)
                       << "Error from Lib GLFW. "
                       << "\nError code: " << error_code
@@ -150,16 +135,14 @@ namespace simulator
 
 
     bool
-    OpenglUi::ui_exited(void)
-    {
+    OpenglUi::ui_exited(void) {
         return glfwWindowShouldClose(window_);
     }
 
 
     GLuint
     OpenglUi::create_program_(const std::string& vert_shader_path,
-                              const std::string& frag_shader_path)
-    {
+                              const std::string& frag_shader_path) {
         GLuint vert_shader = create_shader_(vert_shader_path,
                                             GL_VERTEX_SHADER);
         GLuint frag_shader = create_shader_(frag_shader_path,
@@ -178,8 +161,8 @@ namespace simulator
 
 
     GLuint
-    OpenglUi::create_shader_(const std::string& shader_path, GLenum shader_type)
-    {
+    OpenglUi::create_shader_(const std::string& shader_path,
+                             GLenum shader_type) {
         GLuint shader_id = glCreateShader(shader_type);
         std::string shader_src = get_shader_src_(shader_path);
         const char * raw_shader_src = shader_src.c_str();
@@ -189,8 +172,7 @@ namespace simulator
         GLint compile_status;
         glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_status);
 
-        if(GL_TRUE != compile_status)
-        {
+        if(GL_TRUE != compile_status) {
             char buff[512];
             glGetShaderInfoLog(shader_id, 512, nullptr, buff);
             base::corelog() << base::log_level(base::LOG_ERR)
@@ -203,15 +185,13 @@ namespace simulator
 
 
     std::string
-    OpenglUi::get_shader_src_(const std::string &filepath)
-    {
+    OpenglUi::get_shader_src_(const std::string &filepath) {
         std::ifstream ifs;
         std::string line;
         std::stringstream ss;
         ifs.open(filepath);
 
-        while(getline(ifs, line))
-        {
+        while(getline(ifs, line)) {
             ss << line << '\n';
         }
         ifs.close();
@@ -224,15 +204,13 @@ namespace simulator
         OpenglUi* ui,
         std::vector<std::pair<int64_t, int64_t> > vertices,
         UiColor color)
-        :ui_(ui), color_(color), vertices_(vertices)
-    {
+        :ui_(ui), color_(color), vertices_(vertices) {
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Creating polygon\n";
 
         vertices_gl_.clear();
 
-        for(size_t i = 0; i < vertices.size(); ++i)
-        {
+        for(size_t i = 0; i < vertices.size(); ++i) {
             vertices_gl_.push_back(ui->normalize_xcoord(vertices[i].first));
             vertices_gl_.push_back(ui->normalize_ycoord(vertices[i].second));
         }
@@ -255,8 +233,7 @@ namespace simulator
 
 
     void
-    OpenglUiPolygon::draw(void)
-    {
+    OpenglUiPolygon::draw(void) {
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Drawing polygon " << id_ << '\n';
 

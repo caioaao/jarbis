@@ -18,8 +18,7 @@ std::shared_ptr<simulator::Ui> UI(new simulator::OpenglUi());
 static void cleanup_and_exit_(int exit_code);
 static void sigint_handler_(int s);
 
-int main()
-{
+int main() {
     struct sigaction sigint_action;
 
     sigint_action.sa_handler = sigint_handler_;
@@ -37,8 +36,7 @@ int main()
     std::shared_ptr<simulator::UiElement> test_ui =
         UI->create_polygon(pol, simulator::UiColor(255, 0, 255));
 
-    while(!UI->ui_exited())
-    {
+    while(!UI->ui_exited()) {
         UI->render();
     }
 
@@ -47,8 +45,7 @@ int main()
 
 
 void
-sigint_handler_(int s)
-{
+sigint_handler_(int s) {
     base::corelog() << base::log_level(base::LOG_CRIT)
                     << "SIGINT(" << s << ") captured\n";
     cleanup_and_exit_(0);
@@ -56,8 +53,7 @@ sigint_handler_(int s)
 
 
 void
-cleanup_and_exit_(int exit_code)
-{
+cleanup_and_exit_(int exit_code) {
     base::corelog() << base::log_level(base::LOG_CRIT) <<
         "Cleaning up and exiting...\n";
     exit(exit_code);

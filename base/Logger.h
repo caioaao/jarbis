@@ -4,10 +4,8 @@
 #include <iostream>
 #include <iomanip>
 
-namespace base
-{
-    enum LogLevel
-    {
+namespace base {
+    enum LogLevel {
         LOG_INFO,
         LOG_DEBUG,
         LOG_CRIT,
@@ -19,12 +17,10 @@ namespace base
     class LogStream;
 
     template <typename T>
-    class LogStreamManip
-    {
+    class LogStreamManip {
         typedef LogStream& (*LogStreamManipAction_)(LogStream&, T);
     public:
-        LogStreamManip(LogStreamManipAction_ action, T val)
-            :action_(action), val_(val){}
+        LogStreamManip(LogStreamManipAction_ action, T val) :action_(action), val_(val){}
         LogStream& act(LogStream& l) { return action_(l,val_); }
     private:
         LogStreamManipAction_ action_;
@@ -32,8 +28,7 @@ namespace base
 
     };
 
-    class LogStream
-    {
+    class LogStream {
     private:
         std::ostream &out_;
         LogLevel log_level_;
@@ -50,18 +45,15 @@ namespace base
         void set_printable_log_level(LogLevel new_level);
 
         template <typename T>
-        LogStream& operator<<(LogStreamManip<T> manip)
-            {
+        LogStream& operator<<(LogStreamManip<T> manip) {
                 return manip.act(*this);
             }
 
         LogStream const& operator<<(std::ostream &(*F)(std::ostream&)) const;
 
         template <typename T>
-        LogStream const& operator<<(T const& v) const
-            {
-                if(log_level_ >= printable_log_level_)
-                {
+        LogStream const& operator<<(T const& v) const {
+                if(log_level_ >= printable_log_level_) {
                     out_<< v;
                 }
 

@@ -3,7 +3,6 @@ uniform vec3 triang_color;
 
 out vec4 color;
 
-void main()
-{
+void main() {
     color = vec4(triang_color, 1);
 }

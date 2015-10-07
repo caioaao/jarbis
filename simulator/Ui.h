@@ -12,8 +12,7 @@
 
 #include "base/Exception.h"
 
-namespace simulator
-{
+namespace simulator {
     const size_t MAIN_WINDOW_WIDTH = 1024;
     const size_t MAIN_WINDOW_HEIGHT = 1024;
 
@@ -21,8 +20,7 @@ namespace simulator
     class UiElement;
     class UiColor;
 
-    class UiElement
-    {
+    class UiElement {
     protected:
         uint32_t id_;
 
@@ -34,8 +32,7 @@ namespace simulator
     };
 
 
-    class Ui
-    {
+    class Ui {
     protected:
         std::list<std::shared_ptr<UiElement>> ui_elements_;
         std::unordered_set<uint32_t> ui_element_ids_;
@@ -59,8 +56,7 @@ namespace simulator
     };
 
 
-    class UiColor
-    {
+    class UiColor {
     private:
         uint8_t r_, g_, b_;
     public:
