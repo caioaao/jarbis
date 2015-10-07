@@ -3,6 +3,7 @@
 
 #include <array>
 #include <type_traits>
+#include <ostream>
 
 #include <cstdint>
 #include <cstddef>
@@ -117,6 +118,30 @@ namespace base
         size_t cols() const {return mat_[0].size(); }
     };
 
+    template<typename T, size_t ROWS, size_t COLS> std::ostream&
+    operator<<(std::ostream& stream, const Matrix<T, ROWS, COLS>& mat)
+    {
+        for(unsigned i = 0; i < mat.rows(); ++i)
+        {
+            if(i > 0)
+            {
+                stream << '\n';
+            }
+
+            for(unsigned j = 0; j < mat.cols(); ++j)
+            {
+                if(j > 0)
+                {
+                     stream << ' ';
+                }
+
+                stream << mat[i][j];
+            }
+        }
+        return stream;
+    }
+
+
     template <typename T, size_t SZ>
     Matrix<T, SZ, SZ> identity_matrix(void)
     {
@@ -129,5 +154,7 @@ namespace base
 
         return identity_mat;
     }
+
+
 }
 #endif
