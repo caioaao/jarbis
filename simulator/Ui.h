@@ -10,6 +10,8 @@
 
 #include <cstdint>
 
+#include "base/Exception.h"
+
 namespace simulator
 {
     const size_t MAIN_WINDOW_WIDTH = 1024;
@@ -73,6 +75,11 @@ namespace simulator
         void set_g(uint8_t g);
         void set_b(uint8_t b);
     };
+
+    class UiException: public base::Exception {};
+
+
+    class UiInitException: public UiException {};
 }
 
 #endif

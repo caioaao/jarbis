@@ -35,7 +35,7 @@ namespace simulator
 
         if(!glfwInit())
         {
-            throw -1; // stub
+            throw base::exception<UiInitException>("GLFW failed to initialize");
         }
 
         // Config to use GLSL newer version
@@ -51,7 +51,7 @@ namespace simulator
 
         if(nullptr == window_)
         {
-            throw -1; // stub
+            throw base::exception<UiInitException>("Failed to create window");
         }
 
         glfwMakeContextCurrent(window_);
@@ -60,7 +60,7 @@ namespace simulator
         glewExperimental = true;
         if(GLEW_OK != glewInit())
         {
-            throw -1; // stub
+            throw base::exception<UiInitException>("GLEW failed to initialize");
         }
 
         default_program_ = create_program_("vert.glsl",
