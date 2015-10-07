@@ -27,6 +27,6 @@ namespace base
     public:
         static const ConfigMap& instance(void);
     };
-};
+}
 
 #endif

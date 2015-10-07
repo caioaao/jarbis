@@ -15,22 +15,17 @@
 
 std::shared_ptr<simulator::Ui> UI(new simulator::OpenglUi());
 
-void cleanup_and_exit(int s)
-{
-    base::corelog() << base::log_level(base::LOG_CRIT) <<
-        "Cleaning up and exiting...\n";
-    exit(0);
-}
-
+static void cleanup_and_exit_(int exit_code);
+static void sigint_handler_(int s);
 
 int main()
 {
-    struct sigaction sigint_handler;
+    struct sigaction sigint_action;
 
-    sigint_handler.sa_handler = cleanup_and_exit;
-    sigemptyset(&sigint_handler.sa_mask);
-    sigint_handler.sa_flags = 0;
-    sigaction(SIGINT, &sigint_handler, NULL);
+    sigint_action.sa_handler = sigint_handler_;
+    sigemptyset(&sigint_action.sa_mask);
+    sigint_action.sa_flags = 0;
+    sigaction(SIGINT, &sigint_action, NULL);
 
     std::vector<std::pair<int64_t, int64_t>> pol;
 
@@ -46,5 +41,24 @@ int main()
     {
         UI->render();
     }
-    cleanup_and_exit(0);
+
+    cleanup_and_exit_(0);
+}
+
+
+void
+sigint_handler_(int s)
+{
+    base::corelog() << base::log_level(base::LOG_CRIT)
+                    << "SIGINT(" << s << ") captured\n";
+    cleanup_and_exit_(0);
+}
+
+
+void
+cleanup_and_exit_(int exit_code)
+{
+    base::corelog() << base::log_level(base::LOG_CRIT) <<
+        "Cleaning up and exiting...\n";
+    exit(exit_code);
 }

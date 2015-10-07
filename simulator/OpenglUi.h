@@ -65,6 +65,6 @@ namespace simulator
             UiColor color);
         virtual void draw(void);
     };
-};
+}
 
 #endif

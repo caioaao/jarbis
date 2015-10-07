@@ -73,6 +73,6 @@ namespace simulator
         void set_g(uint8_t g);
         void set_b(uint8_t b);
     };
-};
+}
 
 #endif

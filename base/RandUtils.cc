@@ -26,4 +26,4 @@ namespace base
 
         return s;
     }
-};
+}

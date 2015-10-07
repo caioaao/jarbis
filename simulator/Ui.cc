@@ -84,4 +84,4 @@ namespace simulator
     {
         b_ = b;
     }
-};
+}

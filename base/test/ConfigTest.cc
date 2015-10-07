@@ -166,4 +166,4 @@ namespace base_test
 
         return filepaths;
     }
-};
+}

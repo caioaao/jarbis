@@ -81,4 +81,4 @@ namespace base
     {
         return LogStreamManip<LogLevel>(set_log_level_, lv);
     }
-};
+}

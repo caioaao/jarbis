@@ -286,4 +286,4 @@ namespace simulator
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Drew polygon " << id_ << '\n';
     }
-};
+}

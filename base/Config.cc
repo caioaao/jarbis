@@ -98,4 +98,4 @@ namespace base
 
         return *instance_;
     }
-};
+}
