@@ -14,6 +14,7 @@ namespace base_test {
     void test_mult_(void);
     void test_sum_(void);
     void test_print_(void);
+    void test_addresses_(void);
 
     template<typename T, size_t R, size_t C>
     void check_matrix_(const base::Matrix<T,R,C>& mat,
@@ -29,6 +30,7 @@ namespace base_test {
         test_mult_();
         test_sum_();
         test_print_();
+        test_addresses_();
     }
 
 
@@ -174,6 +176,19 @@ namespace base_test {
 
         base::corelog() << base::log_level(base::LOG_INFO)
                         << base::identity_matrix<int32_t, 2>() << '\n';
+    }
+
+
+    void
+    test_addresses_(void) {
+        base::Matrix<int32_t, 3, 5> mat;
+        mat[0] = {1, 2, 3, 5, 7};
+        mat[1] = {11, 13, 17, 19, 23};
+        mat[2] = {27, 29, 37, 39, 41};
+
+        for(int i = 0; i < 3 * 5; ++i) {
+            ASSERT(*((&mat[0][0]) + i) == mat[i/5][i % 5]);
+        }
     }
 
 
