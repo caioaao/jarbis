@@ -3,6 +3,8 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 #include <cstdint>
 #include <csignal>
@@ -11,6 +13,7 @@
 #include "base/Logger.h"
 #include "simulator/A4988Simulator.h"
 #include "simulator/OpenglUi.h"
+#include "base/Kinematics.h"
 
 std::shared_ptr<simulator::Ui> UI(new simulator::OpenglUi());
 
@@ -43,11 +46,23 @@ int main() {
     pol[4][0][0] = 0;
     pol[4][1][0] = 100;
 
+    std::shared_ptr<simulator::UiElement> test_ui_ref =
+        UI->create_polygon(pol, simulator::UiColor(255, 0, 255));
     std::shared_ptr<simulator::UiElement> test_ui =
         UI->create_polygon(pol, simulator::UiColor(255, 0, 255));
 
+    test_ui->transform(base::rotation_matrix(base::deg_to_rad(45)));
+    test_ui->transform(base::translation_matrix(350, 0));
+    test_ui->transform(base::rotation_matrix(base::deg_to_rad(45)));
+
     while(!UI->ui_exited()) {
         UI->render();
+
+        test_ui->transform(base::translation_matrix(150, 150) *
+                           base::rotation_matrix(test_ui->pos(),
+                                                 base::deg_to_rad(45)));
+
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
     cleanup_and_exit_(0);
