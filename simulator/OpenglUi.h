@@ -57,7 +57,6 @@ namespace simulator {
         GLuint vao_id_;
         GLuint vbo_id_;
         std::vector<GLfloat> vertices_gl_;
-        base::Matrix<float, 3, 3> transform_;
 
     public:
         OpenglUiPolygon(

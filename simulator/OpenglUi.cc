@@ -113,7 +113,7 @@ namespace simulator {
 
     GLint
     OpenglUi::uniform_transform_location(void) {
-        return glGetUniformLocation(default_program_, "trans");
+        return glGetUniformLocation(default_program_, "mvp");
     }
 
 
@@ -259,10 +259,14 @@ namespace simulator {
 
         base::Matrix<float, 3, 3> mvp = ui_->scale_transform() * transform_;
 
+        base::corelog() << base::log_level(base::LOG_INFO)
+                        << "MVP matrix:\n" << mvp << '\n';
+
         GLint uni_trans = ui_->uniform_transform_location();
         glUniformMatrix3fv(uni_trans, 1, GL_FALSE, &mvp[0][0]);
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, vertices_gl_.size() / 2);
+        // glDrawArrays(GL_POINTS, 0, vertices_gl_.size());
 
         glDisableVertexAttribArray(0);
 

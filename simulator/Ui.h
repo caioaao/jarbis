@@ -24,9 +24,13 @@ namespace simulator {
     class UiElement {
     protected:
         uint32_t id_;
+        base::Matrix<float, 3, 3> transform_;
 
     public:
         virtual void draw(void)=0;
+
+        void transform(base::Matrix<float, 3, 3> mat);
+        base::Matrix<float, 2, 1> pos(void);
 
         void set_id(uint32_t id);
         uint32_t id(void);

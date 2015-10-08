@@ -5,6 +5,29 @@
 
 namespace simulator {
     void
+    UiElement::transform(base::Matrix<float, 3, 3> mat) {
+        base::corelog() << base::log_level(base::LOG_INFO)
+                        << "Transforming " << id_ << ".\n"
+                        << "Original matrix:\n" << transform_ << '\n'
+                        << "Transform matrix:\n" << mat << '\n'
+                        << "Result:\n" << (mat * transform_) << '\n';
+        transform_ = mat * transform_;
+    }
+
+
+    base::Matrix<float, 2, 1>
+    UiElement::pos(void) {
+        base::Matrix<float, 2, 1> vec;
+
+        for(unsigned i = 0; i < 3; ++i) {
+            vec[i][0] = transform_[i][2];
+        }
+
+        return vec;
+    }
+
+
+    void
     UiElement::set_id(uint32_t id) {
         id_ = id;
     }
