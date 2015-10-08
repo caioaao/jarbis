@@ -11,6 +11,7 @@
 #include <cstdint>
 
 #include "base/Exception.h"
+#include "base/LinAlg.h"
 
 namespace simulator {
     const size_t MAIN_WINDOW_WIDTH = 1024;
@@ -41,7 +42,7 @@ namespace simulator {
         virtual void render(void)=0;
         virtual bool ui_exited(void)=0;
         virtual std::shared_ptr<UiElement> create_polygon(
-            std::vector<std::pair<int64_t, int64_t> > vertices,
+            const std::vector<base::Matrix<float, 2, 1> >& vertices,
             UiColor color)=0;
         void draw_elements_(void);
 //         virtual shared_ptr<UiElement> create_dot(

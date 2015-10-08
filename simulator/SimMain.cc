@@ -3,7 +3,6 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include <utility>
 
 #include <cstdint>
 #include <csignal>
@@ -26,13 +25,24 @@ int main() {
     sigint_action.sa_flags = 0;
     sigaction(SIGINT, &sigint_action, NULL);
 
-    std::vector<std::pair<int64_t, int64_t>> pol;
+    std::vector<base::Matrix<float, 2, 1> > pol(
+        5, base::Matrix<float, 2, 1>());
 
-    pol.push_back(std::make_pair(0, 0));
-    pol.push_back(std::make_pair(100, 0));
-    pol.push_back(std::make_pair(100, 100));
-    pol.push_back(std::make_pair(50, 200));
-    pol.push_back(std::make_pair(0, 100));
+    pol[0][0][0] = 0;
+    pol[0][1][0] = 0;
+
+    pol[1][0][0] = 100;
+    pol[1][1][0] = 0;
+
+    pol[2][0][0] = 100;
+    pol[2][1][0] = 100;
+
+    pol[3][0][0] = 50;
+    pol[3][1][0] = 200;
+
+    pol[4][0][0] = 0;
+    pol[4][1][0] = 100;
+
     std::shared_ptr<simulator::UiElement> test_ui =
         UI->create_polygon(pol, simulator::UiColor(255, 0, 255));
 

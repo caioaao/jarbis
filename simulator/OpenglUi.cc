@@ -4,12 +4,10 @@
 #include <sstream>
 #include <algorithm>
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include "base/Config.h"
 #include "base/Logger.h"
 #include "base/debug.h"
+#include "base/LinAlg.h"
 
 #include "simulator/Ui.h"
 
@@ -62,6 +60,11 @@ namespace simulator {
 
         // background is white
         glClearColor(1., 1., 1., 1.);
+
+        const base::ConfigMap& cfg = base::SysConfig::instance();
+        scale_transform_[0][0] = 1. / cfg.get("size_x");
+        scale_transform_[1][1] = 1. / cfg.get("size_y");
+        scale_transform_[2][2] = 1;
     }
 
 
@@ -81,25 +84,25 @@ namespace simulator {
     }
 
 
-    double
+    float
     OpenglUi::normalize_xcoord(int64_t x_coord) {
         const base::ConfigMap& cfg = base::SysConfig::instance();
         ASSERT(cfg.get("size_x") > 0);
-        return x_coord / (double)cfg.get("size_x");
+        return x_coord / (float)cfg.get("size_x");
     }
 
 
-    double
+    float
     OpenglUi::normalize_ycoord(int64_t y_coord) {
         const base::ConfigMap& cfg = base::SysConfig::instance();
         ASSERT(cfg.get("size_y") > 0);
-        return y_coord / (double)cfg.get("size_y");
+        return y_coord / (float)cfg.get("size_y");
     }
 
 
-    double
+    float
     OpenglUi::normalize_rgb(uint8_t val) {
-        return val / (double) ((1 << sizeof(val)) - 1);
+        return val / (float) ((1 << sizeof(val)) - 1);
     }
 
     GLint
@@ -115,8 +118,9 @@ namespace simulator {
 
 
     std::shared_ptr<UiElement>
-    OpenglUi::create_polygon(std::vector<std::pair<int64_t, int64_t> > vertices,
-                             UiColor color) {
+    OpenglUi::create_polygon(
+        const std::vector<base::Matrix<float, 2, 1> >& vertices,
+        UiColor color) {
         std::shared_ptr<UiElement> obj(new OpenglUiPolygon(this, vertices,
                                                            color));
 
@@ -200,19 +204,25 @@ namespace simulator {
     }
 
 
+    base::Matrix<float, 3, 3>
+    OpenglUi::scale_transform(void) {
+        return scale_transform_;
+    }
+
+
     OpenglUiPolygon::OpenglUiPolygon(
         OpenglUi* ui,
-        std::vector<std::pair<int64_t, int64_t> > vertices,
-        UiColor color)
-        :ui_(ui), color_(color), vertices_(vertices) {
+        const std::vector<base::Matrix<float, 2, 1> >& vertices, UiColor color)
+        : ui_(ui), color_(color) {
+
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Creating polygon\n";
 
         vertices_gl_.clear();
 
         for(size_t i = 0; i < vertices.size(); ++i) {
-            vertices_gl_.push_back(ui->normalize_xcoord(vertices[i].first));
-            vertices_gl_.push_back(ui->normalize_ycoord(vertices[i].second));
+            vertices_gl_.push_back(vertices[i][0][0]);
+            vertices_gl_.push_back(vertices[i][1][0]);
         }
 
         glGenVertexArrays(1, &vao_id_);
@@ -226,6 +236,7 @@ namespace simulator {
                      &vertices_gl_[0],
                      GL_STATIC_DRAW);
 
+        transform_ = base::identity_matrix<float, 3>();
 
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Created polygon\n";
@@ -246,19 +257,14 @@ namespace simulator {
                     ui_->normalize_rgb(color_.g()),
                     ui_->normalize_rgb(color_.b()));
 
-        // transform_ = glm::rotate(transform_, glm::radians(180.f),
-        //                          glm::vec3(.0f, .0f, 1.f));
+        base::Matrix<float, 3, 3> mvp = ui_->scale_transform() * transform_;
 
         GLint uni_trans = ui_->uniform_transform_location();
-        glUniformMatrix4fv(uni_trans, 1, GL_FALSE, glm::value_ptr(transform_));
+        glUniformMatrix3fv(uni_trans, 1, GL_FALSE, &mvp[0][0]);
 
-
-
-        glDrawArrays(GL_TRIANGLE_FAN, 0, vertices_.size());
-        //glDrawElements(GL_TRIANGLES, elements_gl_.size(), GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, vertices_gl_.size() / 2);
 
         glDisableVertexAttribArray(0);
-
 
         base::corelog() << base::log_level(base::LOG_INFO)
                         << "Drew polygon " << id_ << '\n';

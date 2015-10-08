@@ -5,7 +5,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+
+#include "base/LinAlg.h"
 
 #include "simulator/Ui.h"
 
@@ -17,6 +18,8 @@ namespace simulator {
         static bool glew_initialized_;
 
         GLuint default_program_;
+
+        base::Matrix<float, 3, 3> scale_transform_;
 
         void init_(void);
         static void glfw_err_callback_(int error, const char * desc);
@@ -32,16 +35,18 @@ namespace simulator {
         virtual void render(void);
         virtual bool ui_exited(void);
         virtual std::shared_ptr<UiElement> create_polygon(
-            std::vector<std::pair<int64_t, int64_t> > vertices,
+            const std::vector<base::Matrix<float, 2, 1> >& vertices,
             UiColor color);
 
-        double normalize_xcoord(int64_t x_coord);
-        double normalize_ycoord(int64_t y_coord);
+        float normalize_xcoord(int64_t x_coord);
+        float normalize_ycoord(int64_t y_coord);
 
-        double normalize_rgb(uint8_t val);
+        float normalize_rgb(uint8_t val);
 
         GLint uniform_color_location(void);
         GLint uniform_transform_location(void);
+
+        base::Matrix<float, 3, 3> scale_transform(void);
     };
 
 
@@ -49,16 +54,15 @@ namespace simulator {
     private:
         OpenglUi* ui_;
         UiColor color_;
-        std::vector<std::pair<int64_t, int64_t>> vertices_;
         GLuint vao_id_;
         GLuint vbo_id_;
         std::vector<GLfloat> vertices_gl_;
-        glm::mat4 transform_;
+        base::Matrix<float, 3, 3> transform_;
 
     public:
         OpenglUiPolygon(
             OpenglUi *ui,
-            std::vector<std::pair<int64_t, int64_t> > vertices,
+            const std::vector<base::Matrix<float, 2, 1> >& vertices,
             UiColor color);
         virtual void draw(void);
     };
