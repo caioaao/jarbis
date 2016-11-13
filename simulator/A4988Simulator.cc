@@ -1,24 +1,29 @@
 #include "simulator/A4988Simulator.h"
 
 #include <cstdint>
-
-#include "base/debug.h"
+#include <cmath>
 
 namespace simulator {
+    A4988StepperMotor::A4988StepperMotor(double degrees_per_step) {
+        degrees_per_step_ = degrees_per_step;
+        position_ = 0;
+    }
+
+
     void
     A4988StepperMotor::step(uint32_t step_resolution,
                             StepDirection direction) {
-        uint32_t delta = MAX_RESOLUTION_ / step_resolution;
+        int32_t delta = MAX_RESOLUTION_ / step_resolution;
         if (StepDirection::STEP_REVERSE == direction) {
-            delta = 360 * MAX_RESOLUTION_ - delta;
+            delta = - delta;
         }
-        this->position_ = (this->position_ + delta) % (360 * MAX_RESOLUTION_);
+        this->position_ = (this->position_ + delta);
     }
 
 
     double
     A4988StepperMotor::position(void) {
-        return this->position_ / (float)MAX_RESOLUTION_;
+        return fmod(((this->position_  * degrees_per_step_) / MAX_RESOLUTION_), 360);
     }
 
 
@@ -101,12 +106,12 @@ namespace simulator {
     void
     A4988Simulator::step_(void) {
         if(outputs_are_enabled_()) {
-            controlled_motor_.step(microstep_resolution_, step_direction_);
+            controlled_motor_->step(microstep_resolution_, step_direction_);
         }
     }
 
 
-    A4988Simulator::A4988Simulator() {
+    A4988Simulator::A4988Simulator(std::unique_ptr<A4988StepperMotor> motor) {
         set_value(MS1_PORT, false);
         set_value(MS2_PORT, false);
         set_value(MS3_PORT, false);
@@ -116,7 +121,7 @@ namespace simulator {
         set_value(NRESET_PORT, false);
         set_value(STEP_PORT, false);
 
-        controlled_motor_ = A4988StepperMotor();
+        controlled_motor_ = std::move(motor);
     }
 
 
@@ -130,11 +135,6 @@ namespace simulator {
         return microstep_resolution_;
     }
 
-
-    A4988StepperMotor *
-    A4988Simulator::controlled_motor(void) {
-        return &controlled_motor_;
-    }
 
     void
     A4988Simulator::update(void) {

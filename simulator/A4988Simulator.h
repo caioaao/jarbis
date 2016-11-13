@@ -1,8 +1,10 @@
 #ifndef A4988SIMULATOR_H
 #define A4988SIMULATOR_H
 
-#include <cstdint>
 #include "simulator/SimObj.h"
+
+#include <cstdint>
+#include <memory>
 
 namespace simulator {
     class A4988StepperMotor {
@@ -20,12 +22,15 @@ namespace simulator {
             STEP_REVERSE
         };
 
+        A4988StepperMotor(double degrees_per_step);
         void step(uint32_t step_resolution, StepDirection direction);
         double position(void);
 
+
     private:
         static const uint32_t MAX_RESOLUTION_ = 64;
-        uint32_t position_; // in terms of maximum resolution
+        int32_t position_; // in terms of maximum resolution
+        double degrees_per_step_;
     };
 
     class A4988Simulator: public SimObj {
@@ -41,12 +46,11 @@ namespace simulator {
             STEP_PORT
         };
 
-        A4988Simulator();
+        A4988Simulator(std::unique_ptr<A4988StepperMotor> motor);
         void set_value(Port port_idx, bool logical_value);
         uint32_t state(void);
         uint32_t microstep_resolution(void);
         bool step_direction(void);
-        A4988StepperMotor * controlled_motor(void);
         virtual void update(void);
 
         static bool microstep_cfg_is_valid(bool ms1, bool ms2, bool ms3);
@@ -56,7 +60,7 @@ namespace simulator {
         uint32_t state_;
         uint32_t microstep_resolution_;
         A4988StepperMotor::StepDirection step_direction_;
-        A4988StepperMotor controlled_motor_;
+        std::unique_ptr<A4988StepperMotor> controlled_motor_;
 
         bool get_value_(Port port_idx);
         void update_microstep_resolution_(void);

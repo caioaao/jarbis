@@ -10,4 +10,5 @@ sim
 *.so
 test_input.txt
 base_test
+sim_test
 *.test.cfg
