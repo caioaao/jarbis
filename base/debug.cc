@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <cstdint>
 
-#ifdef _DO_ASSERT
 void
 debug::my_assert(std::string func, std::string cond_str, bool cond) {
     if(!cond) {
@@ -15,4 +14,3 @@ debug::my_assert(std::string func, std::string cond_str, bool cond) {
 
     assert(cond);
 }
-#endif // #ifdef _DO_ASSERT

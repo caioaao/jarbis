@@ -1,0 +1,2 @@
+add_executable(jarbis_simulator_test A4988SimulatorTest.cc main.cc)
+target_link_libraries(jarbis_simulator_test jarbis_base jarbis_simulator)

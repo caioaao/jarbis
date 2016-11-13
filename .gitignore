@@ -13,3 +13,4 @@ base_test
 sim_test
 *.test.cfg
 .tramp_history
+build/

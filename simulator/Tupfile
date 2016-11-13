@@ -1,9 +1,0 @@
-include_rules
-
-DEP_LIBS += $(TOP)/base/libbase.a
-
-SRCS += A4988Simulator.cc
-
-: foreach $(SRCS) |> !compile |>
-: *.o $(DEP_LIBS) |> $(AR) $(ARFLAGS) %o %f |> libsim.a
-
