@@ -1,0 +1,10 @@
+include_rules
+
+DEP_LIBS += $(TOP)/base/libbase.a
+DEP_LIBS += $(TOP)/simulator/libsim.a
+
+SRCS += A4988SimulatorTest.cc
+SRCS += main.cc
+
+: foreach $(SRCS) |> !compile |>
+: *.o $(DEP_LIBS) |> $(CC) $(LDFLAGS) %f -o %o |> sim_test

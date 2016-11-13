@@ -8,7 +8,17 @@ namespace simulator {
     void
     A4988StepperMotor::step(uint32_t step_resolution,
                             StepDirection direction) {
-        // stub
+        uint32_t delta = MAX_RESOLUTION_ / step_resolution;
+        if (StepDirection::STEP_REVERSE == direction) {
+            delta = 360 * MAX_RESOLUTION_ - delta;
+        }
+        this->position_ = (this->position_ + delta) % (360 * MAX_RESOLUTION_);
+    }
+
+
+    double
+    A4988StepperMotor::position(void) {
+        return this->position_ / (float)MAX_RESOLUTION_;
     }
 
 
@@ -126,71 +136,8 @@ namespace simulator {
         return &controlled_motor_;
     }
 
-
-#ifdef DO_SMOKE_TEST
     void
-    test_state_assignment_(void) {
-        A4988Simulator driverSim = A4988Simulator();
-        static const uint32_t MS1_PORT_MSK_ = (1 << A4988Simulator::MS1_PORT);
-        static const uint32_t MS3_PORT_MSK_ = (1 << A4988Simulator::MS3_PORT);
-
-        driverSim.set_value(A4988Simulator::MS1_PORT, true);
-        ASSERT(MS1_PORT_MSK_ == driverSim.state());
-
-        driverSim.set_value(A4988Simulator::MS3_PORT, true);
-
-        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
-
-        driverSim.set_value(A4988Simulator::MS3_PORT, false);
-        ASSERT(MS1_PORT_MSK_ == driverSim.state());
-
-        driverSim.set_value(A4988Simulator::MS3_PORT, false);
-        ASSERT(MS1_PORT_MSK_ == driverSim.state());
-
-        driverSim.set_value(A4988Simulator::MS3_PORT, true);
-        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
-
-        driverSim.set_value(A4988Simulator::MS3_PORT, true);
-        ASSERT((MS1_PORT_MSK_ | MS3_PORT_MSK_) == driverSim.state());
+    A4988Simulator::update(void) {
+        step_();
     }
-
-
-    void
-    test_microstep_cfg_(void) {
-        static const unsigned int expected_microstep_res_[8] =
-            {1, 2, 4, 8, 2, 4, 8, 16};
-
-        A4988Simulator driverSim = A4988Simulator();
-
-        for(int i = 0; i < 8; ++i) {
-            driverSim.set_value(A4988Simulator::MS1_PORT, 1 & i);
-            driverSim.set_value(A4988Simulator::MS2_PORT, 2 & i);
-            driverSim.set_value(A4988Simulator::MS3_PORT, 4 & i);
-
-            uint32_t resulting_res = driverSim.microstep_resolution();
-            ASSERT(resulting_res == expected_microstep_res_[i]);
-        }
-    }
-
-
-    void
-    test_stepping_(void) {
-        // stub
-    }
-
-
-    void
-    test_direction_(void) {
-        // stub
-    }
-
-
-    void
-    test_A4988_simulator(void) {
-        test_state_assignment_();
-        test_microstep_cfg_();
-        test_direction_();
-        test_stepping_();
-    }
-#endif
 }

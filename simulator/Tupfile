@@ -1,17 +1,18 @@
 include_rules
 
-CFLAGS += -DGLEW_STATIC
+#CFLAGS += -DGLEW_STATIC
 
 DEP_LIBS += $(TOP)/base/libbase.a
 
-LDFLAGS += -lGL
-LDFLAGS += -lglfw
-LDFLAGS += -lGLEW
+#LDFLAGS += -lGL
+#LDFLAGS += -lglfw
+#LDFLAGS += -lGLEW
 
 SRCS += A4988Simulator.cc
-SRCS += Ui.cc
-SRCS += OpenglUi.cc
-SRCS += SimMain.cc
+#SRCS += Ui.cc
+#SRCS += OpenglUi.cc
+#SRCS += SimMain.cc
 
 : foreach $(SRCS) |> !compile |>
-: *.o $(DEP_LIBS) |> $(CC) $(LDFLAGS) %f -o %o |> sim
+: *.o $(DEP_LIBS) |> $(AR) $(ARFLAGS) %o %f |> libsim.a
+#: *.o $(DEP_LIBS) |> $(CC) $(LDFLAGS) %f -o %o |> sim
