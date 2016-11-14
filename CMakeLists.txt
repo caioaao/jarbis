@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 2.6)
 project (Jarbis)
+
+add_definitions(-std=c++11)
+
 include_directories("./")
+
 
 add_subdirectory (base)
 add_subdirectory (simulator)
