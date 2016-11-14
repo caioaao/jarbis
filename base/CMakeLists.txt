@@ -1,6 +1,12 @@
-add_library(jarbis_base debug.cc Logger.cc Config.cc RandUtils.cc Kinematics.cc)
+add_library(JarbisBase debug.cc Logger.cc Config.cc RandUtils.cc Kinematics.cc)
 
-install(TARGETS jarbis_base DESTINATION bin)
-install(FILES debug.h Logger.h Config.h RandUtils.h Kinematics.h DESTINATION include/jarbis/base)
+set_target_properties(JarbisBase PROPERTIES
+  PUBLIC_HEADER "debug.h;Logger.h;Config.h;RandUtils.h;Kinematics.h")
+
+install(
+  TARGETS JarbisBase
+  EXPORT JarbisTargets
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}/base" COMPONENT lib
+  PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/base")
 
 add_subdirectory(test)

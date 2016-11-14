@@ -1,0 +1,11 @@
+# Compute paths
+get_filename_component(Jarbis_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(Jarbis_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET foo AND NOT Jarbis_BINARY_DIR)
+  include("${Jarbis_CMAKE_DIR}/JarbisTargets.cmake")
+endif()
+
+# These are IMPORTED targets created by FooBarTargets.cmake
+set(Jarbis_LIBRARIES jarbis_base jarbis_simulator)
