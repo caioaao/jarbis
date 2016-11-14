@@ -41,9 +41,6 @@ export(TARGETS JarbisBase JarbisSimulator
   FILE "${PROJECT_BINARY_DIR}/JarbisTargets.cmake")
 export(PACKAGE Jarbis)
 
-message("${INSTALL_INCLUDE_DIR}")
-message("${INSTALL_CMAKE_DIR}")
-
 # Create the FooBarConfig.cmake and FooBarConfigVersion files
 file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
    "${INSTALL_INCLUDE_DIR}")
