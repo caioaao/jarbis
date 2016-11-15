@@ -19,9 +19,9 @@ set(INSTALL_BIN_DIR "bin/jarbis-${Jarbis_VERSION}"         CACHE PATH
 set(INSTALL_INCLUDE_DIR "include/jarbis-${Jarbis_VERSION}" CACHE PATH
   "Installation directory for header files")
 if(WIN32 AND NOT CYGWIN)
-  set(DEF_INSTALL_CMAKE_DIR CMake)
+  set(DEF_INSTALL_CMAKE_DIR cmake)
 else()
-  set(DEF_INSTALL_CMAKE_DIR lib/CMake/jarbis)
+  set(DEF_INSTALL_CMAKE_DIR lib/cmake/Jarbis)
 endif()
 set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
   "Installation directory for CMake files")
